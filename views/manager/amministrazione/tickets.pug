@@ -1,0 +1,76 @@
+extends ../layout.pug
+
+block layout-content
+
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-receipt
+                |  Tickets
+        main
+            div
+                .row
+                    .col-md-12
+                        .row
+                            h1.text-start Scontrini emessi
+                            hr
+                        .col-md-12
+                            table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                                thead
+                                    tr
+                                        th(scope='col')
+                                        th(scope='col') Stato
+                                        th(scope='col') N°
+                                        th(scope='col') Emissione
+                                        th(scope='col') Scadenza
+                                        th(scope='col') Valore
+                                        th(scope='col') Annulla
+                                tbody.text-end
+                                    each ticket in tickets
+                                        if ticket.type == 'ticket_microhard'
+                                            tr
+                                                td.icon-stato.txt-center
+                                                    .bi.bi-receipt(class=ticket.stato)
+                                                td.stato-message #{ticket.stato_message}
+                                                td #{ticket.id}
+                                                td #{ticket.emissione}
+                                                td #{ticket.scadenza}
+                                                td € #{(ticket.credito/100).toFixed(2)}
+                                                td.text-center 
+                                                    input.form-check-input(type='checkbox' onclick='annullaTicket('+'"'+ ticket.id +'"'+')' checked=ticket.annullato)
+
+
+
+                            
+
+    style.
+        .card-body{
+
+        }
+        table.x-table td.icon-stato .bi{
+            font-size:50px;
+            text-align:center;
+        }
+        table.x-table td.icon-stato .bi{
+            font-size:50px;
+            text-align:center;
+        }
+        table.x-table td.icon-stato .bi.scaduto{
+            color:yellow;
+        }
+        table.x-table td.icon-stato .bi.valido{
+            color:#59C4BF;
+        }
+        table.x-table td.icon-stato .bi.non_valido{
+            color:#DC3545;
+        }
+        .stato-message{
+            text-transform:uppercase;
+        }
+
+
+
+
+
+
+

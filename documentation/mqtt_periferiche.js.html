@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> mqtt/periferiche.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-qrcode.html">qrcode</a></li><li><a href="module-receipt.html">receipt</a></li></ul><h3>Classes</h3><ul><li><a href="AgeValidator.html">AgeValidator</a></li><li><a href="Alarms.html">Alarms</a></li><li><a href="AppSocket.html">AppSocket</a></li><li><a href="BarcodeReader.html">BarcodeReader</a></li><li><a href="BillValidator.html">BillValidator</a></li><li><a href="Boards.html">Boards</a></li><li><a href="Bulkhead.html">Bulkhead</a></li><li><a href="CoinAcceptor.html">CoinAcceptor</a></li><li><a href="Dispensers.html">Dispensers</a></li><li><a href="GPIO.html">GPIO</a></li><li><a href="MqttHandler.html">MqttHandler</a></li><li><a href="OpticalBarrier.html">OpticalBarrier</a></li><li><a href="Power.html">Power</a></li><li><a href="Printer.html">Printer</a></li><li><a href="ProductDoor.html">ProductDoor</a></li><li><a href="Status.html">Status</a></li><li><a href="Temperatures.html">Temperatures</a></li><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apiRoutes">apiRoutes</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#cancellaFile">cancellaFile</a></li><li><a href="global.html#getAlarmsStatus">getAlarmsStatus</a></li><li><a href="global.html#getBillValidatorStatus">getBillValidatorStatus</a></li><li><a href="global.html#getBulkheadStatus">getBulkheadStatus</a></li><li><a href="global.html#getCoinAcceptorStatus">getCoinAcceptorStatus</a></li><li><a href="global.html#getDispensersStatus">getDispensersStatus</a></li><li><a href="global.html#getGpioStatus">getGpioStatus</a></li><li><a href="global.html#getProductdoorStatus">getProductdoorStatus</a></li><li><a href="global.html#http">http</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#inviaTotali">inviaTotali</a></li><li><a href="global.html#loadNetwork">loadNetwork</a></li><li><a href="global.html#mqttHandler">mqttHandler</a></li><li><a href="global.html#periferiche">periferiche</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#setNetwork">setNetwork</a></li><li><a href="global.html#socketConsumer">socketConsumer</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>mqtt/periferiche.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// JSDoc
+
+const fs = require('fs');   // fs sta per "file system" e fornisce un'API per lavorare con il file system in Node.js.
+const os = require('os');   // os sta per "sistema operativo" e fornisce un'API per interagire con il sistema operativo in Node.js.
+const periferiche = [];     // array di periferiche
+
+/**
+ * exports.init:
+ * 
+ * Il seguente modulo esporta la funzione init():
+ * - la funzione "init" si occupa di inviare i `reset` e dell'attivazione delle periferiche;
+ * - la funzione "init" ha due parametri in ingresso: "io" e "mqttClient";
+ * - i due oggetti esterni vengono passati alla funzione al momento della sua chiamata;
+ * 
+ * @param {*} io - istanza di socket.io 
+ * @param {*} mqttClient - istanza di mqtt handler
+ * 
+ */
+exports.init = (io,mqttClient) => {
+
+    // Inizializzazione body
+    let body = {}
+
+    // ****************************************************************
+    // reset di HWBroker + BarcodeReader + ProductDoor
+    // ****************************************************************
+
+    body = { "ts": Date.now() }
+    mqttClient.sendMessage('HWBroker/command/reset', JSON.stringify(body));
+    mqttClient.sendMessage('BarcodeReader/command/reset', JSON.stringify(body));
+    mqttClient.sendMessage('ProductDoor/command/reset', JSON.stringify(body));
+    // TODO: mqttClient.sendMessage('FingerprintReader/command/reset', JSON.stringify(body));
+
+    // ****************************************************************
+    // Salvataggio degli stati su json tramite classe status
+    // ****************************************************************
+
+    // Status subscribe
+    const Status = require(`./status`)
+    const statusClient = new Status(io,mqttClient)
+    statusClient.initStatus()
+
+    // ****************************************************************
+    // Inizializzazione delle periferiche NON PRESENTI in ddxtouch.conf
+    // ****************************************************************
+
+    // Boards init
+    const Boards = require(`./Boards`)
+    const boardsClient = new Boards(mqttClient)
+    boardsClient.initPeripheral()
+
+    // Alarms init
+    const Alarms = require(`./Alarms`)
+    const alarmsClient = new Alarms(mqttClient)
+    alarmsClient.initPeripheral()
+
+    // Temperatures init
+    const Temperatures = require(`./Temperatures`)
+    const tempClient = new Temperatures(mqttClient)
+    tempClient.initPeripheral()
+
+    // Power init
+    const Power = require(`./Power`)
+    const powerClient = new Power(mqttClient)
+    powerClient.initPeripheral()
+
+    // GPIO subscribe
+    const GPIO = require(`./GPIO`)
+    const gpioClient = new GPIO(mqttClient)
+    gpioClient.initPeripheral()
+
+    // ****************************************************************
+    // BarcodeReader enable &amp; subscribe
+    // ****************************************************************
+
+    // const BarcodeReader = require(`./BarcodeReader`)
+    // const barcodeReaderClient = new BarcodeReader(mqttClient)
+    // mqttClient.sendMessage(barcodeReaderClient.enable(body).topic, JSON.stringify(barcodeReaderClient.enable(body).command));
+
+    // ****************************************************************
+    // Inizializzazione delle periferiche PRESENTI in ddxtouch.conf 
+    // ****************************************************************
+
+    try {
+        let data;
+        let platform = os.platform();
+
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) {
+            console.log('\n[ ------------------------------------------------------ ]');
+            console.log('[ @periferiche.js > platform: '+platform);
+            console.log('[ ------------------------------------------------------ ]\n');
+        }
+
+        if(platform == 'linux') {
+            data = fs.readFileSync("/etc/ddxtouch/ddxtouch.conf", 'utf8' );
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) {
+                console.log('\n[ ------------------------------------------------------ ]');
+                console.log('[ @periferiche.js > ddxtouch.conf content:');
+                // console.log(data);
+                console.log('[ ------------------------------------------------------ ]\n');
+            }
+        }
+        else {
+            data = fs.readFileSync('./public/private/periferiche/periferiche.json', 'utf8');
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) {
+                console.log('\n[ ------------------------------------------------------ ]');
+                console.log('[ @periferiche.js > periferiche.json content:');
+                // console.log(data);
+                console.log('[ ------------------------------------------------------ ]\n');
+            }
+        }
+
+        let jsonPeriferiche = [];
+        jsonPeriferiche = JSON.parse(data);
+
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) { console.log('\n[ ------------------------------------------------------ ]'); }
+        for (let periferica of jsonPeriferiche['peripherals']) {
+            // se enabled == true abilito periferica
+            if (periferica['enabled'] === true) {
+                if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) {
+                    console.log('[ @periferiche.js > PERIFERICA INIT > '+periferica['id']);
+                }
+                const classePeriferica = periferica['id']
+                const requirePeriferica = require(`./${classePeriferica}`);
+                const oggettoPeriferica = new requirePeriferica(mqttClient)
+                oggettoPeriferica[`displayClass`]()
+                oggettoPeriferica.initPeripheral()
+                // messageIdentity = oggettoPeriferica[`identity`]()
+                // messageStatus = oggettoPeriferica[`status`]()
+                // mqttClient.receiveMessage(messageIdentity.topic, 'ddxtouch.conf');
+                // mqttClient.receiveMessage(messageStatus.topic, 'ddxtouch.conf');
+            }
+        }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_INIT == 1) { console.log('[ ------------------------------------------------------ ]\n'); }
+    }
+    catch (err) {
+        console.error(err);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

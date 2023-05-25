@@ -1,0 +1,58 @@
+extends ../layout.pug
+
+block layout-content
+    div#vetrina.container-fluid(style='padding: 10px !important; z-index: 999999; width: 100%; background: black; position: absolute;')
+       
+  
+            .row
+                span#containerDiv
+            
+
+    style.
+       
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            }
+
+        .box {
+            width:50px;
+            height:50px;
+            float:left;
+            border:1px solid lightgrey;
+            }
+        .backgroundGreen {
+            background: green;
+        }
+
+    script.
+         function getit(el)
+                {
+                    el.classList.toggle("backgroundGreen");
+                } 
+         function goHome()
+                {
+                   location.href = "/";
+                }            
+        window.addEventListener('load', (event) => {
+            console.log('The page has fully loaded');
+            let screenW = screen.width
+            let screenH = screen.height
+            let rigaBox = ''
+            const numeroBoxinLarghezza = screenW / 50
+            const numeroBoxinAltezza = screenH / 50
+           
+            for (let i = 1; i <= numeroBoxinLarghezza; i++) {
+                
+                 rigaBox += '<div class="box" ontouchstart="getit(this); return false;" ontouchmove="goHome();"></div>'
+               
+            }
+            for (let i = 1; i <= numeroBoxinAltezza; i++) {
+                document.getElementById("containerDiv").innerHTML += rigaBox
+                
+            }
+
+
+            
+        });

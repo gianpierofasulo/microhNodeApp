@@ -1,0 +1,77 @@
+extends ../layout.pug
+
+block layout-content
+
+    script
+        include ../../../src/js/vetrina.js
+
+    - const layoutVetrina = [ {label:"Griglia 4x9",value:"4x9"}, {label:"Griglia 6x5",value:"6x5"}, {label:"Griglia 8x5",value:"8x5"} ] 
+    - const layoutCards = [ {label:"Full Card",value:"full"}, {label:"Image Card",value:"image"}] 
+
+    div#modalVetrinaDigitale.modal
+        form.modal-content
+            div.mb-3
+                input#form_id_vetrina(hidden value=id_vetrina)
+                input#form_id_slot(hidden)
+                label#form_label_products.m-3.form-label(for="listProduct") Seleziona Prodotto 
+                select#form_subcategories.m-3.form-control
+                select#form_products.m-3.form-control
+            div.col-12.d-flex.align-items-center.justify-content-center
+                a.btn.btn-primary.m-3.col-3(role="button" onclick="saveSlot()") Salva slot
+                a.btn.btn-primary.m-3.col-3(onclick="closeModal()") Chiudi
+
+    div#vetrina.container-fluid.pt-5.pb-0
+
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-shop-window
+                    |  Vetrina: 
+                    span#title_vetrina
+
+        main
+            .vetrina-digitale
+                .row.gx-5.mb-5
+                    .col-6
+                        label.me-5.ps-3
+                            h4 Layout Vetrina
+                        select#layoutSelect.col-6.ps-3
+                            each val in layoutVetrina 
+                                    option(value=val.value)
+                                        h5.card-title= val.label
+                    .col-6
+                        label.me-5.ps-3
+                            h4 Layout Elemento
+                        select#cardSelect.col-6.ps-3
+                            each val in layoutCards 
+                                    option(value=val.value)
+                                        h5.card-title= val.label
+            #vetrinaGrid.m-2
+            
+
+    style.
+        .add-prod {
+            width:100%;
+            font-size: 8rem;
+        }
+        .card__image {
+            width: auto;
+            max-width: 100%;
+            max-height: 140px;
+            height: auto;
+        }
+       .card-list{
+            gap: 8px;
+       }
+       .card-subtitle{
+           max-width: 100%;
+           overflow: hidden;
+           text-overflow: ellipsis;
+           white-space: nowrap;
+       }
+       .card{
+            height: 220px;
+            width: 80px;
+            background: rgb(31, 31, 31) !important;
+            box-shadow: 0 0 10px -1px rgb(0 0 0);
+        }
+

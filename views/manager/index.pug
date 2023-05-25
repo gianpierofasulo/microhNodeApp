@@ -1,0 +1,108 @@
+extends layout
+
+block layout-content
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-speedometer2
+                |  Dashboard
+
+        main.stats
+            .row
+                .col-12.me-0.text-center
+                    .card.mb-4.first-level-menu
+                        .card-body
+                            ul.list-unstyled.mt-3.d-flex.row.gx-4
+                                li.col-12.mb-4.chart-big
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                            div.chart-container#vendite-totali
+                                                h3.mt-5 VENDITE TOTALI
+                                                canvas.mt-2#chart
+                                li.col-6.mb-4.chart-small
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                        div.chart-container.chart-incassi#incasso-totale.row.align-items-center.d-flex
+                                            div.col-12
+                                                div.icon
+                                                    i.bi.bi-coin
+                                                h3 Incasso totale
+                                                h2
+                                                
+                                li.col-6.mb-4.chart-small
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                        div.chart-container.chart-incassi#incasso-mese.row.align-items-center.d-flex
+                                            div.col-12
+                                                div.icon
+                                                    i.bi.bi-coin
+                                                h3 Incasso mese
+                                                h2
+                                                
+                                li.col-12.mb-4.chart-big
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                            div.chart-container#vendite-totali
+                                                h3.mt-5 INCASSI MOTORI
+                                                canvas.mt-2#chart-motori
+                                li.col-6.mb-4.chart-small
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                        div.chart-container.chart-incassi#prodotto-maggiore.row.align-items-center.d-flex
+                                            div.row
+                                                div.col-4
+                                                    img(src="" style="max-width:100%;max-height:100%;")
+                                                div.col-8
+                                                    div.icon
+                                                        i.bi.bi-cart
+                                                    h3 
+                                                    h2
+                                        
+                                li.col-6.mb-4.chart-small
+                                    a.w-100.btn.btn-lg.btn-navigator(href='')
+                                        div.chart-container.chart-incassi#incasso-totale.row.align-items-center.d-flex
+                                            div.col-12
+                                                div.icon
+                                                    i.bi.bi-cloud-upload
+                                                h3 ultima sync
+                                                h2 19/02/23
+                .col-12.me-0.text-center
+                    a.btn.btn-danger(href="http://localhost")
+                        | Torna al frontend
+                        i(class="bi bi-box-arrow-right ms-3")
+                    
+                                
+    script(src='/assets/js/chart.js')
+    style.
+       .manager .menu-manager  .card-body .chart-big  a{
+            height:350px;
+        }
+        .manager .menu-manager .card-body .chart-small  a{
+            height:280px;
+        }
+        .chart-container#vendite-totali h3{
+            text-transform : uppercase;
+            font-weight: normal;
+            font-size: 15px;
+        }
+        .chart-container{
+            width:100%;
+            height:100%;
+        }
+        canvas#chart {
+            max-height: 75%;
+            margin-top: 10px;
+        }
+        canvas#chart-motori {
+            max-height: 75%;
+            margin-top: 10px;
+        }
+        .chart-incassi .icon{
+            margin-bottom: 15px;
+            font-size:48px;
+        }
+        .chart-incassi h3{
+            text-transform : uppercase;
+            font-weight: normal;
+            font-size: 15px;
+        }
+
+        .chart-incassi h2{
+            font-size: 50px;
+        }
+

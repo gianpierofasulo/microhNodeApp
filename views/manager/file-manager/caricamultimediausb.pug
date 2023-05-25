@@ -1,0 +1,58 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-usb-symbol
+                |  Carica files da USB
+            .row
+                .col-12.me-0.text-center
+                div#messaggio.d-none.text-danger
+                    h3 ATTENDI CARICAMENTO FILES.....                   
+        main
+          
+            .row.p-3
+                i.glyphicon(class="bi bi-info-circle",aria-hidden="true") <span style="padding:left: 5px;"> E' possibile selezionare anche più files in una volta
+                 
+                .col-12.me-0.text-center(style="padding-top: 20px;")
+               
+                    table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                      thead
+                        tr
+                            th(scope='col').text-center Seleziona i files da caricare nella Vending
+                        tbody#listafiles.text-left
+                           
+                            tr
+                                td.text-center 
+                                    form(action='/file-manager/caricamediausb' method='POST' enctype='multipart/form-data')
+                                        input(type='file', name='filetoupload' multiple='multiple')
+                                        input.w-50(style="background-color: #DC3545")(type='submit' value='Carica')
+                                    
+                    
+                
+                .col-12.me-0.text-center(style="padding: 20px;")
+                    h4 FILES SU VENDING
+                    
+                    table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                        thead
+                            tr
+                                th(scope='col').text-center Nome file 
+                                th(scope='col') Dimensione
+                                th(scope='col') Seleziona
+                               
+                        tbody.text-left
+                            if listafileslocali
+                                each file, key in listafileslocali
+                                    tr
+                                        td #{file.name}
+                                        td #{file.size}
+                                        td.text-center
+                                            form#gestionemedia 
+                                                input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+                .row.justify-content-center
+                    
+                    .col-4.mt-5.text-center
+                        a.w-100.btn.btn-lg.mb-1.btn-danger(role='button' onclick="cancellafile('gestionemedia')")
+                            i.bi.bi-trash3-fill
+                            |  Cancella files

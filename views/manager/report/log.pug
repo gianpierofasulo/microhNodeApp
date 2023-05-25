@@ -1,0 +1,101 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-clipboard-data
+                |  Log
+        .row
+        
+            .row(style="margin-top: 15px;")
+            .col-md-4.text-right 
+                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                    | FILTRI
+                    
+            .col-md-4
+                a.w-100.btn.btn-lg.btn-secondary.mb-1.p-4(href='?' type='button')
+                    | Pagina #{datipaging.page}/#{datipaging.total_pages}
+            .col-md-4
+                a.w-100.btn.btn-lg.btn-secondary.mb-1.p-4(href='?' type='button')
+                    | Elementi #{datipaging.total}
+        .row
+            .col-12.text-left.p0.mt-3
+                table(style='width:100%').table.table-bordered.table-striped.log-table
+                   
+                    tbody.text-left
+                   
+                        //ul
+                            each item in orderBy(datipaging.data, 'message')
+                                li= item.message
+
+                        for dato, key in datipaging.data
+                        
+                            script 
+                                - var stato = dato.message.state
+                                - var tipo = dato.type
+                                - var date = new Date(dato.date);
+                                - var options = { year: 'numeric',  month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'Europe/Rome'};
+                                - var formattedDate = date.toLocaleDateString('it-IT', options);
+
+                            tr
+                            td.text-center(style="vertical-align: middle;")
+
+                                i.bi(class=dato.message.icon style="font-size: 3rem;")
+
+                                //- if tipo === 'transaction'
+                                //-     if stato === 'new'
+                                //-         i(class="bi bi-cash-stack",style="font-size: 3rem;")
+                                //-     if stato === 'pending'
+                                //-         i(class="bi bi-cash-stack text-warning",style="font-size: 3rem;")
+                                //-     if stato === 'complete'
+                                //-         i(class="bi bi-cash-stack text-success",style="font-size: 3rem;")
+                                
+                                td
+                                    strong #{ dato.message.description }
+                                    br
+                                    small id: #{ dato.message.id } 
+
+                                td.text-end data/ora
+                                    br
+                                    //- small #{dato.date}
+                                    span #{formattedDate}
+                               
+                
+                    table(style='width:100%').table.table-bordered.table-striped 
+                       
+                         tr
+                            td
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                                </svg>
+                                a(href="?page="+`${datipaging.page-1}`  ).text-decoration-none &nbsp;INDIETRO 
+                            td.text-end(style="width: 50%") 
+                                if datipaging.next_page
+                                    a(href="?page="+`${datipaging.next_page}`  ).text-decoration-none AVANTI 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-arrow-right-circle-fill  text-success" viewBox="0 0 16 16">
+                                        <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                                    </svg>
+
+    style.
+        .log-table{
+            background:rgb(31,31,31);
+            margin: 0;
+            padding:0;
+        }
+        table td{
+            color:white;
+        }
+        .table-bordered > :not(caption) > * {
+            border-width: 7px 0;
+            border-color: rgba(18,18,18);
+        }
+        .table-bordered > :not(caption) > * > * {
+            border-width: 0 7px;
+        }
+        a{
+            color:white;
+        }
+        .btn{
+            font-size:2rem;
+        }

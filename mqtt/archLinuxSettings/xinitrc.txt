@@ -1,0 +1,60 @@
+#CHROMIUM
+#/home/alarm/.xinitrc
+
+#!/usr/bin/env sh
+
+xset -dpms
+xset s off
+xset s noblank
+
+unclutter &
+chromium http://localhost:3000 \
+  --kiosk \
+  --start-fullscreen \
+  --window-size=1080,1920 \
+  --window-position=0,0 \
+  --incognito \
+  --noerrdialogs \
+  --disable-translate \
+  --no-first-run \
+  --fast \
+  --fast-start \
+  --disable-infobars \
+  --disable-features=TranslateUi \
+  --disk-cache-dir=/dev/null \
+  --overscroll-history-navigation=0 \
+  --disable-pinch \
+  --disable-features=AudioServiceOutOfProcess
+  
+
+#FIREFOX
+#!/usr/bin/env sh
+
+xset -dpms
+xset s off
+xset s noblank
+
+unclutter &
+firefox -width 1080 -height 1920 -private-window http://localhost:3000
+
+#LUAKIT
+#!/usr/bin/env sh
+
+xset -dpms
+xset s off
+xset s noblank
+
+unclutter &
+luakit http://localhost:3000
+
+#MIDORI
+#!/usr/bin/env sh
+
+xset -dpms     # disable DPMS (Energy Star) features.
+xset s off     # disable screen saver
+xset s noblank # don't blank the video device
+
+# unclutter nasconde il mouse dopo tot secondi di inattività
+unclutter &
+matchbox-window-manager &
+midori -e Fullscreen -a http://localhost:3000

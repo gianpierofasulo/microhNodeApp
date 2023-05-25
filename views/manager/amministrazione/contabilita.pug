@@ -1,0 +1,99 @@
+extends ../layout.pug
+
+block layout-content
+
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-cash-coin
+                |  Contabilità
+        main
+            div
+                .row
+                    .col-md-12
+                        .row
+                            h1.text-start Generale
+                            hr
+                        .col-md-12
+                            table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                                thead
+                                    tr
+                                        th(scope='col') Indicatori
+                                        th(scope='col') Totali
+                                tbody.text-end
+                                    tr
+                                        td INCASSO TOTALE
+                                        td € #{(contabilita.incasso/100).toFixed(2)}
+                                    tr
+                                        td INCASSO (MONETA)
+                                        td € #{(contabilita.incasso_monete/100).toFixed(2)}
+                                    tr
+                                        td INCASSO (BANCONOTA)
+                                        td € #{(contabilita.incasso_banconote/100).toFixed(2)}
+                                    tr
+                                        td INCASSO (CASHLESS)
+                                        td € #{(contabilita.incasso_cashless/100).toFixed(2)}
+                                    tr
+                                        td INCASSO (POS)
+                                        td € #{(contabilita.incasso_pos/100).toFixed(2)}
+                                    tr
+                                        td INCASSO (TICKET)
+                                        td € #{(contabilita.incasso_scontrino/100).toFixed(2)}
+                                    tr
+                                        td RESTO SCONTRINO
+                                        td € #{(contabilita.resto_scontrino/100).toFixed(2)}
+                                    tr
+                                        td RESTO MONETA
+                                        td € #{(contabilita.resto_monete/100).toFixed(2)}
+                                    tr
+                                        td RESTO TOTALE (SCONTRINO + MONETA)
+                                        td € #{(contabilita.resto_totale/100).toFixed(2)}
+                                    tr
+                                        td TOTALE VENDUTO
+                                        td € #{(contabilita.totale_venduto/100).toFixed(2)}
+
+
+                .row.mt-5
+                    .col-md-12
+                        .row
+                            h1.text-start Contatori motori
+                            hr
+                        .col-md-12(style='margin-left:auto; margin-right:auto')
+                            table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                                thead
+                                    tr
+                                        th(scope='col') Erogatore
+                                        th(scope='col') Prodotto
+                                        th(scope='col') Incasso
+                                tbody.text-end
+                                    - contabilita_motori.sort(function(a, b) {return a.motore - b.motore;})
+                                    each val in contabilita_motori
+                                        tr
+                                            td.col-2 #{val.alias}
+                                            td #{val.titolo_prodotto}
+                                            td.col-3 € #{(val.incasso/100).toFixed(2)}
+
+            .row.mt-5
+                .col-8.d-flex.align-items-center
+                    h2 Ultimo azzeramento:
+                .col-4
+                    input#dataAzzeramento.form-control(type='text' name="dataAzzeramento" style='height:50px' value=contabilita.azzeramento)
+            .row.mt-5
+                .col-4.mt-5.text-center
+                    a.w-100.btn.btn-lg.btn-danger.mb-1.p-4(type='button' onClick="resetContabilita()")
+                        //i.bi.bi-arrow-left-square-fill
+                        |  Azzera
+                .col-4.mt-5.text-center
+                    a.w-100.btn.btn-lg.btn-success.mb-1.p-4(type='button')
+                        //i.bi.bi-arrow-left-square-fill
+                        |  Stampa
+                .col-4.mt-5.text-center
+                    a.w-100.btn.btn-lg.btn-success.mb-1.p-4(type='button')
+                        //i.bi.bi-arrow-left-square-fill
+                        |  Invia via email
+
+
+
+
+
+

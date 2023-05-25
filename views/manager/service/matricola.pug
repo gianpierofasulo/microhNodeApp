@@ -1,0 +1,25 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page
+                i.bi.bi-123
+                |  Identificativi
+            .row.p-3
+                .col-12.me-0
+                    form#configForm
+                        .form-group.mb-4
+                            label.form-label Matricola della macchina:
+                            input#seriale.form-control.p-3.js-virtual-keyboard.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' placeholder='Numero seriale' name='matricola' data-config="generali" value=config.matricola)
+                        .form-group.mb-3
+                            label.form-label Identificativo macchina:
+                            input#idMacchina.form-control.p-3.js-virtual-keyboard.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' placeholder='Identificativo macchina' name='id_macchina' data-config="generali" value=config.id_macchina)
+                        .form-group.mb-3
+                            label.form-label Identificato venditore:
+                            input#idEsercente.form-control.p-3.js-virtual-keyboard.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' placeholder='identificativo venditore' name='id_eseercente' data-config="generali" value=config.id_esercente)
+            .row.justify-content-center.mt-5.mb-5.actions-buttons
+                    .col-4.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.p-4(onclick="saveConfig('configForm', 'config')")
+                                i.bi.bi-check-circle.me-3
+                                span Salva

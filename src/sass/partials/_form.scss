@@ -1,0 +1,75 @@
+
+  .form-check.form-switch {
+    height: 60px;
+    line-height: 60px;
+    padding-left: 12rem;
+    label {
+	    font-size: 2.5rem;
+	}
+    .form-check-input[type=checkbox] {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%255, 255, 255, 0.4%29'/%3e%3c/svg%3e") !important;
+		transition: background-position 0.15s ease-in-out;
+		margin-left: -5.5em;
+	    width: 12rem !important;
+	    background-position: left center;
+	    border-radius: 2em;
+	    background-repeat: no-repeat;
+	    transition: background-position 0.15s ease-in-out;
+	    background-color : rgba(255, 255, 255, 0.2);
+    }
+    .form-check-input:checked[type=checkbox] {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgb(187, 134, 252)'/%3e%3c/svg%3e") !important;
+		background-repeat: no-repeat;
+		background-position: right;
+	}
+
+  }	
+
+
+.manager input, .manager select, .manager .form-select-lg {
+    height: 60px;
+    font-size: 2rem;
+    background: rgb(31, 31, 31);
+    color: white;
+    border: rgba(31, 31, 31);
+    height: 60px !important;
+}
+.manager textarea{
+    background: rgb(31, 31, 31);
+    border: none;
+    color: white;
+}
+.manager .form-check-input.bg-light {
+    background: rgba(255,255,255,0.2) !important;
+    margin: 0;
+}
+
+.form-check-input[type=checkbox] {
+    border-radius: 0.25em;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.form-check-input[type=radio] {
+    border-radius: 50%;
+    width: 50px !important;
+    height: 50px !important;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.form-check-input:checked[type=checkbox] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='rgb(187, 134, 252)' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.form-check-input:checked[type=radio] {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='rgb(187, 134, 252)'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
+

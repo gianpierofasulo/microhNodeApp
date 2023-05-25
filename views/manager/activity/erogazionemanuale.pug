@@ -1,0 +1,195 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-bell
+                |  Erogazione
+
+        main
+            .row.gx-5.mb-2.mt-5
+            .col-12.me-0.text-center
+                h2(style="padding: 10px;")  Erogazione manuale: scegli il canale da testare
+
+            #erogazione
+
+                //ul
+                    each val, key in bulkheadStatus
+                        li(id=key data-status=val) #{key}: #{val}
+
+                //ul
+                    each val, key in productDoorStatus
+                        li(id=key data-status=val) #{key}: #{val}
+                        
+                .row.gx-5.gy-2.mb-2.justify-content-center
+                    h2.justify-content-center.text-center(style="padding: 10px;") Gruppo #{motoriConf[0].group}
+                    - var n = 1
+                    - var cols_per_row = motoriConf[0].dispensersPerBoard; // Numero di colonne per riga
+                    while n <= motoriConf[0].count
+                        - if (n % cols_per_row == 1) // Se il resto della divisione per 10 è 0, crea una nuova riga
+                            .row
+                        .card.col-1
+                            .card-body
+                                h3.card-title.text-center(style="padding: 0;") #{n-1+10}
+                                input.form-check-input(id='motore_'+motoriConf[0].group+'_'+n type='checkbox' value=n-1 name='motore_'+motoriConf[0].group+'_'+n data-status=n data-gruppo=motoriConf[0].group)
+                                - n++
+                    
+                //.row.container
+                    h2(style="padding: 10px;") Gruppo A
+                    - var num_items = 60; // Numero totale di elementi
+                    - var cols_per_row = 10; // Numero di colonne per riga
+                    - for (var i = 0; i < num_items; i++)
+                        - if (i % cols_per_row == 0) // Se il resto della divisione per 10 è 0, crea una nuova riga
+                            .row
+                        .col-1 #{i}
+                        - if ((i + 1) % cols_per_row == 0 || i == num_items - 1) // Se il resto della divisione per 10 è 0 o se siamo all'ultimo elemento, chiudi la riga
+                        |     
+
+                //.row.gx-5.mb-2
+                    h2(style="padding: 10px;") Gruppo B
+                    -var n = 1
+                    while n <= 2
+                        .card.col-1
+                            .card-body
+                                h1.card-title.text-center(style="padding: 5px;") #{n-1}
+                                input.form-check-input(id='motore_b_'+n type='checkbox' value=n-1 name='motore_b_'+n data-status=n data-gruppo="B")
+                                - n++
+            
+            .row
+
+                #paratia_col.col-6.mb-3.mt-5.form-check.form-switch.d-flex.text-danger.justify-content-center
+                        input#paratia.form-check-input(type='checkbox' value="" data-config="" name="paratia" onclick="")
+                        label.form-check-label.ms-5(for='paratia') Paratia
+                
+                
+                #vano_col.col-6.mb-3.mt-5.form-check.form-switch.d-flex.text-danger.justify-content-center
+                            input#vano.form-check-input(type='checkbox' value="" data-config="" name="vano" onclick="")
+                            label.form-check-label.ms-5(for='vano') Portello prodotto
+
+            //pulsante Esci
+
+            .row.gx-5.mb-2.mt-5
+            .col-12.me-0.text-center
+                h2(style="padding: 10px;")  Erogazione sequenziale: scegli il gruppo di motori da testare
+
+            .row
+                .col-12.mt-5.d-flex.justify-content-center
+                    button.w-0.btn.btn-lg.btn-success.mb-2.p-5(id='erogazione_sequenziale_'+motoriConf[0].group href='#' type='button' style='width:auto;')
+                        |  EROGAZIONE SEQUENZIALE 
+                        i.bi.bi-arrow-right-square-fill
+                .col-12.mt-5.d-flex.justify-content-center
+                    button.w-0.btn.btn-lg.btn-danger.mb-2.p-5#stop(href='#' type='button' style='width:auto;')
+                        |  STOP EROGAZIONE 
+                        i.bi.bi-arrow-right-square-fill
+                    
+                //.col-12.mt-5.d-flex.justify-content-center
+                    a.w-0.btn.btn-lg.btn-danger.mb-2.p-5#erogazione_sequenziale_b(href='#' type='button' style='width:auto;')
+                        |  EROGAZIONE SEQUENZIALE B 
+                        i.bi.bi-arrow-right-square-fill
+                //.col-12.mt-5.d-flex.justify-content-center
+                    a.w-0.btn.btn-lg.btn-danger.mb-2.p-5#stop(href='#' type='button' style='width:auto;')
+                        |  STOP EROGAZIONE 
+                        i.bi.bi-arrow-right-square-fill
+
+                .col-12.mt-5.d-flex.justify-content-center
+                        h2 Ora è possibile erogare
+
+    script(src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js")
+    script.
+        
+        console.warn(`#{motoriConf[0]}`)
+
+        let canaliGruppo = `#{motoriConf[0].group}`
+        //- console.warn('canaliGruppo >', canaliGruppo)
+        console.log(`%ccanaliGruppo: ${canaliGruppo}`, 'color: #48ff48');
+
+        let canaliNumero = `#{motoriConf[0].count}`
+        //- console.warn('canaliNumero >', canaliNumero)
+        console.log(`%ccanaliNumero: ${canaliNumero}`, 'color: #48ff48');
+
+        let bulkHeadStatus = `#{bulkheadStatus.Bulkhead.status}`
+        //- console.warn('bulkHeadStatus >', bulkHeadStatus)
+        console.log(`%cbulkHeadStatus: ${bulkHeadStatus}`, 'color: #48ff48');
+
+        let productDoorStatus = `#{productDoorStatus.ProductDoor.status}`
+        //- console.warn('productDoorStatus >', productDoorStatus)
+        console.log(`%cproductDoorStatus: ${productDoorStatus}`, 'color: #48ff48');
+        
+        // ********************************
+        // MQTT > Mosquitto
+        // ********************************
+        // const host = 'test.mosquitto.org'
+        const ip = `#{ip.ip}`
+        const portWs = '8080'
+        const clientId = `microhard_${Math.random().toString(16).slice(3)}`
+        let options = {
+            clientId: clientId,
+            clean: true,
+            keepalive: 60,
+            reconnectPeriod: 1000,
+            connectTimeout: 30 * 1000
+        }
+        const connectUrlWs = `ws://${ip}:${portWs}`
+        const client = mqtt.connect(connectUrlWs, options)
+
+        // ****************************************************************
+        // MQTT > subscribe
+        // ****************************************************************
+
+        let topics = [
+            'Dispensers/telemetry/dispenseComplete',
+            'Dispensers/telemetry/dispenseFailed',
+            'Bulkhead/telemetry/status',
+            'ProductDoor/telemetry/status'
+        ]
+
+        for (let topic of topics) {
+            //console.log('topic -->',topic)
+            client.subscribe([topic], () => {
+                console.warn(`Subscribed to topic: '${topic}'`)
+            })
+        }
+
+        // ****************************************************************
+        // paratia stato iniziale
+        // ****************************************************************
+
+        let bulk = document.getElementById('paratia');
+        if (bulkHeadStatus == 'inactive' || bulkHeadStatus == 'offline' || bulkHeadStatus == 'moving') {
+            bulk.disabled = true
+        }
+        else {
+            if(bulkHeadStatus == 'closed') { bulk.checked = false }
+            else if (bulkHeadStatus == 'open') { bulk.checked = true }
+        }
+
+        // ****************************************************************
+        // portello stato iniziale
+        // ****************************************************************
+
+        let door = document.getElementById('vano');
+        if (productDoorStatus == 'inactive' || productDoorStatus == 'offline' || productDoorStatus == 'moving') {
+            door.disabled = true
+        }
+        else {
+            if(productDoorStatus == 'closed') { door.checked = false }
+            else if (productDoorStatus == 'open') { door.checked = true }
+        }        
+
+    style.
+        .btn.btn-lg{
+            height: 60px;
+            padding: 0 30px;
+            font-size: 20px;
+        }
+        .card {
+            padding: 0 !important;
+        }
+        .card-title{
+            width: 100% !important;                 
+        }
+        .form-check-input[type=checkbox] {
+            /*width: 100% !important;*/
+            background-color: rgba(255,255,255,0.2);
+        }

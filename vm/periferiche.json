@@ -1,0 +1,51 @@
+{
+    "peripherals" :
+    [
+        {
+            "id" : "CoinAcceptor",
+            "type" : "rendiresto",
+            "enabled" : true,
+            "connection" : "mdb",
+            "address" : 1
+        },
+        {
+            "id" : "BillValidator",
+            "type" : "acceptor",
+            "enabled" : true,
+            "connection" : "mdb",
+            "address" : 5
+        },
+        {
+            "id" : "Dispensers",
+            "group": "A",
+            "type" : "direct",
+            "enabled" : true,
+            "connection" : "cctalk",
+            "count" : 2,
+            "startAddress" : 1,
+            "numberOfBoards" : 0,
+            "dispensersPerBoard" : 0,
+            "needsOpticalBarrier": false,
+            "showPrice": false
+        },
+        {
+            "id" : "Dispensers",
+            "group": "B",
+            "type" : "board",
+            "enabled" : true,
+            "connection" : "cctalk",
+            "count" : 10,
+            "startAddress" : 1,
+            "numberOfBoards" : 1,
+            "dispensersPerBoard" : 10,
+            "needsOpticalBarrier": true,
+            "showPrice": false
+        },
+        {
+            "id" : "BarCodeReader",
+            "enabled" : true,
+            "connection" : "usb",
+            "device" : "/dev/barcodeReader"
+        }
+    ]
+}

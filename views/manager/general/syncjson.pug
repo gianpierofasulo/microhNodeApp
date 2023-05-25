@@ -1,0 +1,109 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-cloud-arrow-down
+                |  SYNC JSON CON cloud
+                       
+        main
+           form#gestionejson  
+            .row.p-3
+                i.glyphicon(class="bi bi-info-circle",aria-hidden="true") <span style="padding:left: 5px;"> Carico/scarico manuale di file JSON sul CLOUD
+                 
+                .col-12.mt-3.me-0.text-center(style="padding-top: 20px;")
+                  
+                    table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                      thead
+                        
+                        tbody#listafiles.text-left
+                            if listaFiles
+                                each val, index in listaFiles
+                                    tr
+                                    td #{val.immagine} 
+                                    td #{val.timestamp} 
+                                    td.text-center 
+                                        input#file0.form-check-input(type='radio' name='nomefile' value=val.immagine )
+                           
+                
+                .col-12.mt-3.me-0.text-center(style="padding: 20px;")
+                    h3.mb-3 FILES SU VENDING
+                    table(style='width:100%').table.x-table.table-bordered.table-striped.log-table
+                        thead
+                            tr
+                                th(scope='col') Nome file 
+                                th(scope='col') Data
+                                th(scope='col').text-center  Seleziona
+                               
+                        tbody.text-left
+                            if listafileslocali
+                                each file, key in listafileslocali
+                                    tr
+                                        td #{file.name}
+                                        td #{file.datacreazione}
+                                        td.text-center 
+                                            input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+                                   
+                            if elencofilesCanali
+                                tr 
+                                    td(colspan='3').text-center Elenco files in /Canali
+                                each file, key in elencofilesCanali
+                                    tr
+                                        td #{file.name}
+                                        td #{file.datacreazione}
+                                        td.text-center 
+                                            input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+                            if elencofilesContabilita
+                                tr 
+                                    td(colspan='3').text-center Elenco files in /Contabilità
+                                each file, key in elencofilesContabilita
+                                    tr
+                                        td #{file.name}
+                                        td #{file.datacreazione}
+                                        td.text-center 
+                                            input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+                            if elencofilesLogs
+                                tr 
+                                    td(colspan='3').text-center Elenco files in /Logs
+                                each file, key in elencofilesLogs
+                                    tr
+                                        td #{file.name}
+                                        td #{file.datacreazione}
+                                        td.text-center 
+                                            input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+
+                                            
+
+                .col-12.mt-3.me-0.text-center(style="padding: 20px;")
+                    h3.mb-3 FILES SU CLOUD
+                    .row
+                        .col-12.me-0.text-center
+                        div#messaggio.d-none.text-danger
+                            h3 ATTENDI CARICAMENTO FILES..... 
+                    table(style='width:100%').table.x-table.table-bordered.table-striped.log-table
+                        thead
+                            tr
+                                th(scope='col') Nome file 
+                                th(scope='col') Data
+                                th(scope='col').text-center  Seleziona
+                            if listaFilesJSONCloud
+                                each val, index in listaFilesJSONCloud
+                                    tr
+                                    td #{val.nomefile} 
+                                    td #{val.data} 
+                                    td.text-center 
+                                        input#file0.form-check-input(type='radio' name='nomefile' value=val.nomefile + ',' +  val.cartella)
+                                        
+                                        
+                        
+
+                .row.justify-content-center
+                    .col-5.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.btn-success(role='button' onclick="caricajsondsuloud('gestionejson')")
+                            i.bi.bi-upload
+                            |  Carica su CLOUD
+                    .col-5.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.btn-info(role='button' onclick="downloadjsondacloud('gestionejson')")
+                            i.bi.bi-cloud-download 
+                            |  Download da CLOUD 

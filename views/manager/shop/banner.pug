@@ -1,0 +1,86 @@
+extends ../layout.pug
+
+block layout-content
+
+    script
+        include ../../../src/js/banner.js
+    
+    div#modalBannerManagerAddBanner.modal
+        form.modal-content
+            h2 Crea un nuovo banner
+            label.form-label Nome:
+            input#form_banner_id
+            a.btn.btn-primary.mb-3(role="button" onclick="addNewBanner()") Salva
+            a.btn.btn-primary(onclick="closeModals()") Chiudi
+
+    div#modalBannerManagerAddImage.modal
+        form.modal-content
+            input#form_banner_image_banner_id(hidden)
+            h2.mb-5.mt-3#form_banner_image_title
+            table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+
+                thead
+                    tr
+                        th(scope='col').text-center Nome file 
+                        th(scope='col').text-center N Dimensione
+                        th(scope='col').text-center Anteprima
+                        th(scope='col').text-center Seleziona
+                       
+                tbody.text-left
+                    each file in files
+                        tr
+                            td.text-center #{file.name}
+                            td.text-center  #{file.size}
+                            td.text-center
+                                img.p-2.rounded(height="80px" src="/media/"+file.name )
+                            td.text-center
+                                input.form-check-input(type='radio' name='image' value=file.name )
+            div.row.align-items-center.mb-5.mt-5
+                div.col-6.d-flex.justify-content-start
+                    a.btn.btn-danger(onclick="closeModals()") Chiudi
+                div.col-6.d-flex.justify-content-end 
+                    a.btn.btn-success(role="button" onclick="addNewImage()") Salva banner
+                
+    div.container-fluid.pt-5.pb-0
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-images
+                |  Gestione Banner
+
+        main
+          //.row
+                .col-12.p-3.shadow-sm.py-3.text-left
+                        button#edit-banner.col-6.btn.btn-success.align-items-center.d-flex.justify-content-center.ms-3(onclick="openNewBannerModal()")
+                            i.bi.bi-plus.me-3
+                            span Aggiungi Nuovo Banner
+          .row
+                .col-12.p-3.shadow-sm.py-3.text-left
+                    table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                        thead
+                            tr
+                                th(scope='col').text-center Abilitato
+                                th(scope='col').text-center ID Banner
+                                th(scope='col').text-center Immagini 
+                        tbody#bannerTableBody.text-left
+                            each b in banners
+                                tr
+                                    td
+                                        span.form-check.form-switch
+                                            input.form-check-input(id='banner_status_'+b.id type="checkbox" role="switch" onClick="changeBannerState('"+b.id+"')" checked=b.enabled)
+                                    td.text-center=b.id
+                                    td
+                                        ul
+                                            each i in b.images
+                                                li.row
+                                                    div.col-12.text-center
+                                                        img.p-2.rounded(height="100px" src="/media/"+i )
+                                                        a(onclick="removeImage('"+i+"', '"+b.id+"')")
+                                                            span.bi-trash.m3
+                                        div.text-center
+                                            a.btn.btn-success.mb-3(role="button" onclick="openImageModal('"+b.id+"')") 
+                                                i.bi.bi-plus.me-3
+                                                span Aggiungi Immagine
+
+                       
+
+

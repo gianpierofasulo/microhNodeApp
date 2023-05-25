@@ -1,0 +1,40 @@
+.aside-box
+	.logo
+		img(src="/assets/img/microhard-icon.png")
+	ul.menu-header
+
+		li(class=active == 'dashboard' ? 'active': '')
+			a(href='/')
+				i.bi.bi-speedometer2
+				//span dashboard
+		li(class= active =='general'? 'active': '')
+			a(href='/general')
+				i.bi.bi-gear
+				//span generali
+		li(class= active =='shop'? 'active': '')
+			a(href='/shop')
+				i.bi.bi-shop
+				//span shop
+		li(class= active =='report'? 'active': '')
+			a(href='/report')
+				i.bi.bi-clipboard-data
+				//span report
+		li(class= active =='amministrazione'? 'active': '')
+			a(href='/amministrazione')
+				i.bi.bi-cash-coin
+				//span amministrazione
+		li(class= active =='file-manager'? 'active': '')
+			a(href='/file-manager')
+				i.bi.bi-folder
+				//span file manager
+		li(class= active =='activity'? 'active': '')
+			a(href='/activity')
+				i.bi.bi-activity
+				//span test
+
+	ul.menu-admin
+		li(class= active =='service'? 'active': '')
+			a(href='/service')
+				i.bi.bi-tools
+				//span Service
+			

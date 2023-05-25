@@ -1,0 +1,165 @@
+extends ../layout.pug
+
+block layout-content
+
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-hdd-network
+                |  Rete
+
+        form#configForm
+            //LOCAL IP
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 Configurazione RETE
+                        hr
+                .col-6.mb-3.form-check.form-switch.d-flex
+                        input#dhcp.form-check-input(type='checkbox' value=config_network_system.dhcp data-config="network_system" name="dhcp" onclick="clickCheck('dhcp')")
+                        label.form-check-label.ms-5(for='dhcp') DHCP Abilitato?
+            .row.p3
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 IP
+                        .form-group
+                            input#formLocalIpIp.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="localIp_ip" value=config_network_system.localIp_ip data-config="network_system").checkip
+
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Netmask
+                        .form-group
+                            input#formLocalNetmask.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="netmask" value=config_network_system.netmask data-config="network_system").checkip
+            .row.p3
+                .col-12.mb-3
+                   // .row.p-3
+                        h2.mt-5 Local API
+                        hr
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Gateway
+                        .form-group
+                             input#formLocalGw.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="gateway" value=config_network_system.gateway data-config="network_system").checkip
+
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 DNS Primario
+                        .form-group
+                             input#formLocalDNSprim.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="dns_primario" value=config_network_system.dns_primario data-config="network_system").checkip
+                
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 DNS Secondario
+                        .form-group
+                             input#formLocalDNSsec.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="dns_secondario" value=config_network_system.dns_secondario data-config="network_system").checkip
+                            
+                             
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 Cloud API
+                        hr
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 IP
+                        .form-group
+                            input#formCloudApiIp.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="cloudApi_ip" value=config_network.cloudApi_ip data-config="network")
+                .col-6.mb-3
+                        .row.d-flex.flex-wrap.p-3
+                            h3 Utente
+                            .form-group
+                                input#formLocalApiUtente.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="indirizzo_email" value=config_network.indirizzo_email data-config="network")
+                        .row.d-flex.flex-wrap.p-3
+                            h3 Password
+                            .form-group
+                                input#formLocalApiPsw.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="password" value=config_network.password data-config="network")
+                       
+                        .row.d-flex.flex-wrap.p-3
+                            a.btn.bg-primary.btn-primary(role='button' style='width:200px height:50px'  onclick="connection('configForm')").align-items-center.d-flex
+                                i.bi.bi-cloud-upload
+                                    |  Connetti Cloud
+
+    
+
+            .row
+                .col-6.mt-5.mb-3.d-flex.justify-content-start
+                    a.btn.bg-danger.btn-primary(href='#' role='button' style='width:200px; height:50px').align-items-center.d-flex
+                        i.bi.bi-x-circle
+                            |  Annulla
+                .col-6.mt-5.mb-3.d-flex.justify-content-end
+                    a.btn.bg-success.btn-primary(role='button' style='width:200px' onclick="saveNetwork('configForm','network')").align-items-center.d-flex
+                        i.bi.bi-check-circle
+                            |  Salva
+
+    style.
+        .btn-primary {
+            font-size: 2rem !important;
+            height: 60px !important;
+            line-height: 60px !important;
+            padding: 0 30px !important;
+            border: none !important;
+        }
+    script.
+            document.querySelectorAll('input[type=checkbox]')
+                .forEach(function (item) {
+                    if (item.value == 1) {
+                    item.checked = 1
+                    }
+                })
+
+            window.addEventListener("load", () => {
+                
+                // gestione eventi form
+                        let checkDhcp = document.getElementById('dhcp');
+                        if(checkDhcp.checked == 1){
+                                var inputCheck = document.getElementsByClassName("checkip");
+                                for (var i = 0; i < inputCheck.length; i++) {
+                                    inputCheck[i].readOnly = true
+                                    
+                                }
+                        
+                        }else{
+                                var inputCheck = document.getElementsByClassName("checkip");
+                                for (var i = 0; i < inputCheck.length; i++) {
+                                    inputCheck[i].readOnly = false
+                                    
+                                }
+                          
+                        }
+
+                         
+
+            })
+
+
+            document.addEventListener("DOMContentLoaded", () => {
+                    // lo lancio a prescindere perchè serve per capire se il DHCP è abilitato
+                    // questo evento viene chiamato prima del window.addEventListener("load"
+                    //   loadConfig();
+                   
+            });
+          
+          
+
+
+
+            clickCheck = (id) => {
+                let check = document.getElementById(id);
+                //console.log(check.checked)
+                if(check.checked == 1){
+                   
+                    check.value = 1
+                    document.getElementById('formLocalIpIp').readOnly = true
+                    document.getElementById('formLocalNetmask').readOnly = true
+                    document.getElementById('formLocalGw').readOnly = true
+                    document.getElementById('formLocalDNSprim').readOnly = true
+                    document.getElementById('formLocalDNSsec').readOnly = true
+                }else{
+                    check.value = 0
+                    document.getElementById('formLocalIpIp').readOnly = false
+                    document.getElementById('formLocalNetmask').readOnly = false
+                    document.getElementById('formLocalGw').readOnly = false
+                    document.getElementById('formLocalDNSprim').readOnly = false
+                    document.getElementById('formLocalDNSsec').readOnly = false
+                }
+            }

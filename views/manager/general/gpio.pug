@@ -1,0 +1,335 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-lightbulb
+                |  Luci Led 
+                //br
+                //|  #{ip.ip}
+        main
+
+            #gpio
+                ul
+                    each val, key in gpioStatus
+                        li(id=key data-status=val) #{key}: #{val}
+
+            .row.p-5
+                .col-6
+                    h1.mt-5 Luci Led
+                    hr.mb-5
+                    form#editLight(action=ip+'/post-mqtt' method='POST')
+                        .form-group
+                            select#mode1.form-select.form-select-lg.mb-3(aria-label='' name='mode' required='required')
+                                option(value='') Seleziona uno stato
+                                option(value='on') ON
+                                option(value='off') OFF
+                                option(value='blink') BLINK
+                        br
+                        .form-group
+                            input#ts1.form-control(name='ts' type='hidden' value='123' readonly='' max='1000' min='0')
+                            input#device1.form-control(name='device' type='hidden' value='GPIO' readonly='')
+                            input#method1.form-control(name='method' type='hidden' value='mainLight' readonly='')
+                        button.btn.btn-primary(type='button' onclick="send('mainLight')") INVIA
+                .col-6
+                    h1.mt-5 Luci Ritiro Prodotto
+                    hr.mb-5
+                    form#editProductLight(action=ip+'/post-mqtt' method='POST')
+                        .form-group
+                            select#modeProductLight.form-select.form-select-lg.mb-3(aria-label='' name='mode' required='required')
+                                option(value='') Seleziona uno stato
+                                option(value='on') ON
+                                option(value='off') OFF
+                                option(value='blink') BLINK
+                        br
+                        .form-group
+                            input#ts2.form-control(name='ts' type='hidden' value='123' readonly='' max='1000' min='0')
+                            input#device2.form-control(name='device' type='hidden' value='GPIO' readonly='')
+                            input#method2.form-control(name='method' type='hidden' value='productLight' readonly='')
+                        button.btn.btn-primary(type='button' onclick="send('productLight')") INVIA
+                
+                .col-6
+                    h1.mt-5 Luci UV
+                    hr.mb-5
+                    form#editUvLight(action=ip+'/post-mqtt' method='POST')
+                        .form-group
+                            select#modeUV.form-select.form-select-lg.mb-3(aria-label='' name='mode' required='required')
+                                option(value='') Seleziona uno stato
+                                option(value=100) ON
+                                option(value=0) OFF
+                        br
+                        .form-group
+                            input#ts3.form-control(name='ts' type='hidden' value='123' readonly='' max='1000' min='0')
+                            input#device3.form-control(name='device' type='hidden' value='GPIO' readonly='')
+                            input#method3.form-control(name='method' type='hidden' value='uvLight' readonly='')
+                        button.btn.btn-primary(type='button' onclick="send('uvLight')") INVIA
+
+                .col-6
+                    h1.mt-5 Luci Plexiglass RGB
+                    hr.mb-5
+                    form#editRgb(action=ip+'/post-mqtt' method='POST')
+                        .form-group
+                            select#mode.form-select.form-select-lg.mb-3(aria-label='' name='mode' required='required')
+                                option(value='') Seleziona uno stato
+                                option(value='on') ON
+                                option(value='off') OFF
+                                option(value='pulse') PULSE
+                                option(value='blink') BLINK
+                                option(value='rainbow') RAINBOW
+                                option(value='random') RANDOM
+                                option(value='program') PROGRAM
+                        .form-group
+                            input#valore_red.form-control(name='red' type='hidden' readonly='' max='100' min='0')
+                            input#valore_green.form-control(name='green' type='hidden' readonly='' max='100' min='0')
+                            input#valore_blue.form-control(name='blue' type='hidden' readonly='' max='100' min='0')
+                            input#ts.form-control(name='ts' type='hidden' value='123' readonly='' max='100' min='0')
+                            input#device.form-control(name='device' type='hidden' value='GPIO' readonly='')
+                            input#method.form-control(name='method' type='hidden' value='rgbLight' readonly='')
+                        br
+                        .form-group
+                            button.btn.btn-primary.btn-color.me-3(type='button' onclick='return getRGBValue(0,0,100)') &nbsp;
+                            button.btn.btn-success.btn-color.me-3(type='button' onclick='return getRGBValue(0,100,0)') &nbsp;
+                            button.btn.btn-danger.btn-color.me-3(type='button' onclick='return getRGBValue(100,0,0)') &nbsp;
+                            br
+                            br
+                            button.btn.btn-warning.btn-color.me-3(type='button' onclick='return getRGBValue(100,100,0)') &nbsp;
+                            button.btn.btn-info.btn-color.me-3(type='button' onclick='return getRGBValue(0,100,100)') &nbsp;
+                            button.btn.btn-secondary.btn-color(type='button' onclick='return getRGBValue(50,50,50)') &nbsp;
+                        br
+                        br
+                        button.btn.btn-primary(type='button' onclick="send('rgbLight')") INVIA
+
+    script(src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js")
+    script.
+
+        function selectElement(id, valueToSelect) {
+                let element = document.getElementById(id);
+                element.value = valueToSelect;
+        }
+        
+        // ********************************
+        // Mosquitto
+        // ********************************
+        // const host = 'test.mosquitto.org'
+        const ip = `#{ip.ip}`
+        const portWs = '8080'
+        const clientId = `microhard_${Math.random().toString(16).slice(3)}`
+        let options = {
+            clientId: clientId,
+            clean: true,
+            keepalive: 60,
+            reconnectPeriod: 1000,
+            connectTimeout: 30 * 1000
+        }
+        const connectUrlWs = `ws://${ip}:${portWs}`
+        const client = mqtt.connect(connectUrlWs, options)
+        
+        // ********************************
+        // HWBroker
+        // ********************************
+        //- const topicReset = 'Broadcast/command/reset'
+        //- const topicReset = 'HWBroker/command/reset'
+        //- let messaggio = { "ts": 123 } // funziona ma non benissimo!
+        //- let messaggio = { "ts": parseInt(Date.now()/1000) } // funziona ma non benissimo!
+        //- let messaggio = { "ts": Date.now() } // FUNZIONA AL TOP!
+        //- client.publish(topicReset, JSON.stringify(messaggio), { qos: 1, retain: false }, (error) => {
+        //-      if (error) {
+        //-          console.error(error)
+        //-      }
+        //- })
+
+        // ****************************************************************
+        // GPIO stato iniziale
+        // ****************************************************************
+        let gpioStatus = `#{gpioStatus}`
+        let mainLightStatus = `#{gpioStatus.GPIO.mainLight}`
+        let productLightStatus = `#{gpioStatus.GPIO.productLight}`
+        let uvLightStatus = `#{gpioStatus.GPIO.uvLight}`
+        console.log('gpioStatus >', gpioStatus)
+        console.log('mainLight >', mainLightStatus)
+        console.log('productLight >', productLightStatus)
+        console.log('uvLight >', uvLightStatus)
+
+        let mainLight = document.getElementById('mode1');
+        if(mainLightStatus == 'off') {
+            mainLight.value = 'off'
+        }
+        else if (mainLightStatus == 'on') {
+            mainLight.value = 'on'
+        }
+
+        let productLight = document.getElementById('modeProductLight');
+        if(productLightStatus == 'off') {
+            productLight.value = 'off'
+        }
+        else if (productLightStatus == 'on') {
+            productLight.value = 'on'
+        }
+
+        let uvLight = document.getElementById('modeUV');
+        let text
+        let uvOptions
+        let optionToSelect
+        if(uvLightStatus == 0) {
+            text = 'OFF'
+            uvOptions = Array.from(uvLight.options);
+            optionToSelect = uvOptions.find(item => item.text === text);
+            optionToSelect.selected = true;
+        }
+        else if (uvLightStatus == 100) {
+            text = 'ON'
+            uvOptions = Array.from(uvLight.options);
+            optionToSelect = uvOptions.find(item => item.text === text);
+            optionToSelect.selected = true;
+        }
+
+        // ********************************
+        // GPIO
+        // ********************************
+        const topic = 'GPIO/telemetry/status'
+        client.subscribe([topic], () => {
+            console.log(`GPIO > subscribed to topic: '${topic}'`)
+        })
+
+        client.on('message', (topic, message) => {
+            //console.log('GPIO > received message:', topic, message.toString())
+            jsonMessage = JSON.parse(message)
+            if(topic === 'GPIO/telemetry/status') {
+                selectElement('mode1', jsonMessage.mainLight);
+            }
+        })
+        window.getRGBValue = function (red, green, blue) {
+            document.getElementById('valore_red').value = red;
+            document.getElementById('valore_green').value = green;
+            document.getElementById('valore_blue').value = blue;
+            //console.log(red);
+            //console.log(green);
+            //console.log(blue);
+        }
+
+        window.send = function (tipo) {
+            let procedi = true;
+            let form = {}
+
+            if (tipo === 'rgbLight') {
+                if (document.getElementById('mode').value == '') {
+                    procedi = false;
+                }
+                body = {
+                    mode: document.getElementById('mode').value,
+                    red: document.getElementById('valore_red').value,
+                    green: document.getElementById('valore_green').value,
+                    blue: document.getElementById('valore_blue').value,
+                    ts: document.getElementById('ts').value,
+                    device: document.getElementById('device').value,
+                    method: document.getElementById('method').value
+                }
+            } else if (tipo === 'mainLight' || tipo === 'productLight' || tipo === 'uvLight') {
+                if (document.getElementById('mode1').value == '') {
+                    procedi = false;
+                }
+                //- else if (document.getElementById('modeProductLight').value == '') {
+                //-     procedi = false;
+                //- }
+                //- else if (document.getElementById('modeUV').value == '') {
+                //-     procedi = false;
+                //- }
+
+                if (tipo === 'mainLight') {
+                    body = {
+                        mode: document.getElementById('mode1').value,
+                        ts: document.getElementById('ts1').value,
+                        device: document.getElementById('device1').value,
+                        method: document.getElementById('method1').value
+                    }
+                }
+                else if (tipo === 'productLight') {
+                    body = {
+                        mode: document.getElementById('modeProductLight').value,
+                        ts: document.getElementById('ts2').value,
+                        device: document.getElementById('device2').value,
+                        method: document.getElementById('method2').value
+                    }
+                }
+                else if (tipo === 'uvLight'){
+                    body = {
+                        intensity: document.getElementById('modeUV').value,
+                        ts: document.getElementById('ts3').value,
+                        device: document.getElementById('device3').value,
+                        method: document.getElementById('method3').value
+                    }
+                }
+                
+            }
+
+            if (procedi) {
+                if (tipo === 'rgbLight') {
+                    let command = {mode: body.mode, color:[ { "red": Number(body.red), "green": Number(body.green), "blue": Number(body.blue) } ], ts: Number(body.ts) }
+                    var mqttObject = {
+                        topic : 'GPIO/command/rgbLight', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                        message : command
+                    }
+                    client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                        if (error) {
+                            console.error(error)
+                        }
+                    })
+                } 
+                else if (tipo === 'mainLight') {
+                    let command = { mode: body.mode, ts: Number(body.ts) }
+                    let mqttObject = {
+                        topic : 'GPIO/command/mainLight', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                        message : command 
+                    }        
+                    client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                        if (error) {
+                            console.error(error)
+                        }
+                    })
+                }
+                else if (tipo === 'productLight') {
+                    let command = { mode: body.mode, ts: Number(body.ts) }
+                    let mqttObject = {
+                        topic : 'GPIO/command/productLight', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                        message : command 
+                    }        
+                    client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                        if (error) {
+                            console.error(error)
+                        }
+                    })
+                }
+                else if (tipo === 'uvLight') {
+                    let command = { intensity: Number(body.intensity), ts: Number(body.ts) }
+                    let mqttObject = {
+                        topic : 'GPIO/command/uvLight', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                        message : command 
+                    }        
+                    client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                        if (error) {
+                            console.error(error)
+                        }
+                    })
+                }
+            }
+        }
+
+    style.
+        .title-header {
+            max-width: 700px;
+        }
+        input,select,.form-select-lg{
+            height: 60px;
+            font-size: 2rem;
+        }
+        .btn-primary{
+            font-size: 2rem;
+            height: 60px;
+            line-height: 60px;
+            padding: 0 30px;
+        }
+        .btn-color {
+            padding: 25px 50px;
+            height: 80px;
+        }

@@ -1,0 +1,76 @@
+
+//Boostrap
+@import "~bootstrap/scss/bootstrap";
+@import "./bootstrap-icons.scss";
+@import 'animate.css';
+
+//Custom class for design
+.shad-box{
+  box-shadow: 0 0 1rem 0 rgb(0 0 0 / 20%);
+  &:hover{
+
+  }
+}
+.icon-font-big{
+  font-size: 50px;
+}
+.icon-font-medium{
+  font-size: 30px;
+}
+.icon-font-small{
+  font-size: 15px;
+}
+
+
+.btn-default {
+  border-radius: 20px;
+  appearance: none;
+  border: none;
+  padding: 0 15px;
+  background: #00A6FB;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+
+.bg-primary{
+  background: #BB86FC !important;
+}
+
+.bg-primary-variant{
+  background: #3700B3 !important;
+}
+.bg-secondary{
+  background: #03DAC6 !important;
+}
+.bg-dark{
+  background: rgb(18,18,18) !important;
+}
+.bg-light{
+  background: rgb(31,31,31) !important;
+}

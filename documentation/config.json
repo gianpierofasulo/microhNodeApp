@@ -1,0 +1,12 @@
+{
+  "source": {
+    "includePattern": ".+\\.js(doc|x)?$",
+    "include": ["./src/js","./classes","./controllers","./routes/api", "./mqtt", "./app.js"]
+  },
+  "recurseDepth": 10,
+  "opts": {
+    "destination": "./documentation/",
+    "template": "node_modules/docdash",
+    "recurse": true
+  }
+}

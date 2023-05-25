@@ -1,0 +1,109 @@
+{
+    "peripherals" :
+    [
+        {
+            "id" : "CoinAcceptor",
+            "type" : "rendiresto",
+            "enabled" : true,
+            "connection" : "mdb",
+            "address" : 1
+        },
+        {
+            "id" : "BillValidator",
+            "type" : "acceptor",
+            "enabled" : true,
+            "connection" : "mdb",
+            "address" : 5
+        },
+        {
+            "id" : "Pos",
+            "type" : "ingenico",
+            "enabled" : false,
+            "connection" : "serial",
+            "device" : "/dev/ttyPOS"
+        },
+        {
+            "id" : "Cashless",
+            "type" : "pk3",
+            "enabled" : false,
+            "connection" : "mdb",
+            "address" : 16
+        },
+        {
+            "id" : "Dispensers",
+            "group": "A",
+            "type" : "direct",
+            "enabled" : true,
+            "connection" : "cctalk",
+            "count" : 2,
+            "startAddress" : 1,
+            "numberOfBoards" : 0,
+            "dispensersPerBoard" : 0,
+            "needsOpticalBarrier": false,
+            "showPrice": false
+        },
+        {
+            "id" : "Locker",
+            "type" : "board",
+            "enabled" : false,
+            "connection" : "cctalk",
+            "count" : 10,
+            "startAddress" : 100,
+            "numberOfBoards" : 1,
+            "dispensersPerBoard" : 10
+        },
+        {
+            "id" : "Coils",
+            "type" : "board",
+            "enabled" : false,
+            "connection" : "cctalk",
+            "count" : 24,
+            "startAddress" : 100,
+            "numberOfBoards" : 3,
+            "dispensersPerBoard" : 8
+        },{
+            "id" : "Printer",
+            "type" : "sanei",
+            "enabled" : true,
+            "connection" : "usb",
+            "device" : "/dev/usb/lp0"
+        },
+        {
+            "id" : "OpticalBarrier",
+            "enabled" : false
+        },
+        {
+            "id" : "Bulkhead",
+            "enabled" : false
+        },
+        {
+            "id" : "ProductDoor",
+            "enabled" : false
+        },
+        {
+            "id" : "BarcodeReader",
+            "enabled" : true,
+            "connection" : "usb",
+            "device" : "/dev/barcodeReader"
+        },
+        {
+            "id" : "FingerprintReader",
+            "enabled" : true,
+            "connection" : "usbserial",
+            "device" : "/dev/ttyFPRINT"
+        },
+        {
+            "id" : "AgeValidator",
+            "enabled" : true,
+            "connection" : "gpio"
+        },
+        {
+            "id" : "RgbLight",
+            "enabled" : true
+        },
+        {
+            "id" : "Camera",
+            "enabled" : true
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+
+$font-path: "../../assets/fonts/";
+$icons-path: "../../assets/img";
+// custom colors
+$dark: #051923;
+$light:  #ebecec;
+$accent:     #00A6FB;
+$accent_alt:   #0582CA;
+$palette_third:  #006494;
+$blue:  #003554;
+
+// variables.scss
+$button_icon: #fff;
+
+//Fonts
+//$font-family-base: 'Inconsolata', monospace;
+/*$font-family-base: 'Varela Round', sans-serif;*/
+//$font-family-base: 'Montserrat', sans-serif;
+$font-family-base: 'Open Sans', sans-serif;
+
+//
+// custom variables (es: for breakpoints)
+// --------------------------------------
+/*$breakpoint-xs: all and (max-width: 769px);
+$breakpoint-md: all and (max-width: 1024px);
+$breakpoint-md-port: screen and (device-width : 768px) and (device-width : 1024px) and (orientation:portrait);
+$breakpoint-la: all and (max-width: 1200px);
+$breakpoint-large: all and (min-width: 1024px);
+$breakpoint-up: all and (min-width: 769px);
+$breakpoint-xl: all and (min-width: 1200px);
+$container-size: 1400px;*/
+
+// Animations
+// --------------------------------------------------
+@keyframes fade-in {
+  100% { opacity: 1; transform: translateY(0); }
+}
+

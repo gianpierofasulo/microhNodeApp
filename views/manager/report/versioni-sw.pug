@@ -1,0 +1,233 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-cpu
+                |  Periferiche
+        //riga 1
+        .row
+            .col-6.p-3.shadow-sm.py-3.text-left
+                table(style='width:100%').table.table-bordered.table-striped.log-table
+                    thead
+                        tr
+                            th(scope='col') Periferica
+                            th(scope='col') Informazioni
+                    tbody.text-left
+                        tr
+                            td AgeValidator
+                            td#AgeValidator
+                        tr
+                            td Alarms
+                            td#Alarms
+                        tr
+                            td BillValidator
+                            td#BillValidator
+                        tr
+                            td Bulkhead
+                            td#Bulkhead
+                        tr
+                            td CoinAcceptor
+                            td#CoinAcceptor
+                        tr
+                            td GPIO
+                            td#GPIO
+                        tr
+                            td HWBroker
+                            td#HWBroker
+                        tr
+                            td OpticalBarrier
+                            td#OpticalBarrier
+                        tr
+                            td Pos
+                            td
+                        tr
+                            td Power
+                            td#Power
+                        tr
+                            td Printer
+                            td#Printer
+                        tr
+                            td ProductDoor
+                            td#ProductDoor
+                        tr
+                            td Temperatures
+                            td#Temperatures
+
+            .col-6.p-3.shadow-sm.py-3.text-left
+                 table(style='width:100%').table.table-bordered.table-striped.log-table
+                    thead
+                        tr
+                            th(scope='col') Periferica
+                            th(scope='col') Informazioni
+                    tbody.text-left
+                        tr
+                            td Boards
+                            td#Boards0
+                        tr
+                            td Boards
+                            td#Boards1
+                        tr
+                            td Boards
+                            td#Boards2
+                        tr
+                            td Boards
+                            td#Boards3
+                        tr
+                            td Boards
+                            td#Boards4
+                        tr
+                            td Dispensers
+                            td#Dispensers0
+                        tr
+                            td Dispensers
+                            td#Dispensers1
+
+        //pulsante Esci
+        .row.justify-content-center
+            .col-4.mt-5.text-center
+                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                    |  Aggiorna
+    style.
+        .log-table{
+            background:rgb(31,31,31);
+            margin: 0;
+            padding:0;
+        }
+        table td,table th{
+            color:white !important;
+            font-size:2rem;
+        }
+
+        .table-bordered > :not(caption) > * {
+            border-width: 7px 0;
+            border-color: rgba(18,18,18);
+        }
+        .table-bordered > :not(caption) > * > * {
+            border-width: 0 7px;
+        }
+        a{
+            color:white !important;
+        }
+
+        .btn{
+            font-size:2rem;
+        }
+
+    script(src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js")
+    script.
+        // Mosquitto
+        // const host = 'test.mosquitto.org'        // online
+        const host = `#{ip}`
+        const portWs = '8080'                       // porta
+        const connectUrlWs = `ws://192.168.1.123:${portWs}`
+        const client = mqtt.connect(connectUrlWs)
+
+        // ********************************
+        // Identity (13 periferiche presenti su 19)
+        // ********************************
+
+        /*
+        HWBroker/telemetry/identity
+        Boards/telemetry/identity
+        CoinAcceptor/telemetry/identity
+        BillValidator/telemetry/identity
+        Cashless_?/telemetry/identity
+        Pos/telemetry/identity
+        Printer/telemetry/identity
+        Hoppers/telemetry/identity
+        Dispensers/telemetry/identity
+        OpticalBarrier/telemetry/identity
+        Bulkhead/telemetry/identity
+        ProductDoor/telemetry/identity
+        BarcodeReader/telemetry/identity
+        FingerprintReader/telemetry/identity
+        AgeValidator/telemetry/identity
+        Alarms/telemetry/identity
+        Temperatures/telemetry/identity
+        Power/telemetry/identity
+        GPIO/telemetry/identity
+        */
+
+        const arrayIdentity = [];
+        arrayIdentity.push('HWBroker/telemetry/identity');
+        arrayIdentity.push('Boards/telemetry/identity');
+        arrayIdentity.push('CoinAcceptor/telemetry/identity');
+        arrayIdentity.push('BillValidator/telemetry/identity');
+        arrayIdentity.push('Cashless_?/telemetry/identity');
+        arrayIdentity.push('Pos/telemetry/identity');
+        arrayIdentity.push('Printer/telemetry/identity');
+        arrayIdentity.push('Hoppers/telemetry/identity');
+        arrayIdentity.push('Dispensers/telemetry/identity');
+        arrayIdentity.push('OpticalBarrier/telemetry/identity');
+        arrayIdentity.push('Bulkhead/telemetry/identity');
+        arrayIdentity.push('ProductDoor/telemetry/identity');
+        arrayIdentity.push('BarcodeReader/telemetry/identity');
+        arrayIdentity.push('FingerprintReader/telemetry/identity');
+        arrayIdentity.push('AgeValidator/telemetry/identity');
+        arrayIdentity.push('Alarms/telemetry/identity');
+        arrayIdentity.push('Temperatures/telemetry/identity');
+        arrayIdentity.push('Power/telemetry/identity');
+        arrayIdentity.push('GPIO/telemetry/identity');
+        
+        console.log('arrayIdentity',arrayIdentity)
+        for(let identity of arrayIdentity){
+            console.log('identity',identity)
+            client.subscribe([identity], () => {
+                console.log(`@@@@@@ > subscribed to topic: '${identity}'`)
+            })
+        }
+        
+        // ********************************
+        // HWBroker
+        // ********************************
+        const topicBroker = 'HWBroker/telemetry/status'
+        client.subscribe([topicBroker], () => {
+            console.log(`@@@@@@ > subscribed to topic: '${topicBroker}'`)
+            })
+
+        const topicReset = 'HWBroker/command/reset'
+        const messageReset =  '{ "ts": 123 }'
+        client.publish(topicReset, messageReset, { qos: 1, retain: false }, (error) => {
+                if (error) {
+                    console.error(error)
+                }
+            })
+
+        // ********************************
+        // HWBroker
+        // ********************************
+        client.on('message', (topic, message) => {
+            console.log('@@@@@@ > received message:', topic, message.toString())
+            console.log(JSON.parse(message))
+            jsonMessage = JSON.parse(message)
+            
+            if(topic != 'Boards/telemetry/identity' && topic != 'Dispensers/telemetry/identity') {
+                let text = topic
+                const myArray = text.split("/");
+                let word = myArray[0];
+                console.log('word',word)
+                let element = document.getElementById(word);
+                element.innerHTML = jsonMessage.manufacturer + ' ' + jsonMessage.model + ' ' + jsonMessage.fwVersion;
+            }
+            else {
+                let text = topic
+                const myArray = text.split("/");
+                let word = myArray[0];
+                console.log('word',word)
+                let element = document.getElementById(word);
+                for(let identity of jsonMessage.identities){
+                    console.log('identity',identity)
+                }
+                for (i = 0; i < jsonMessage.identities.length; i++) {
+                    console.log('identity',jsonMessage.identities[i]);
+                    console.log('identity manufacturer',jsonMessage.identities[i].manufacturer);
+                    if(jsonMessage.identities[i].manufacturer != '') {
+                        console.log('word',word+i);
+                        let element = document.getElementById(word+i);
+                        element.innerHTML = jsonMessage.identities[i].manufacturer + ' ' + jsonMessage.identities[i].model + ' ' + jsonMessage.identities[i].fwVersion;
+                    }   
+                }
+            }
+        })

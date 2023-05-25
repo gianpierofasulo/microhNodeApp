@@ -1,0 +1,201 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-bell
+                |  Allarmi
+        .row.mt-3
+            .col-12.p-3.shadow-sm.py-3.text-center
+                .row.p-0
+                    h2
+                        i.bi.bi-info-circle
+                        |  Legenda stati
+                .row.mt-5
+                    .col-md-4.offset-sm-2.text-center 
+                        h2
+                            i.bi.bi-bell-fill.text-danger
+                            |  Periferica in Allarme (per informazioni dettagliate consultare il log da pagina utilità)
+                            
+                    .col-md-4.text-center 
+                        h2
+                            i.bi.bi-bell-fill.text-success
+                            |  Periferica Funzionante (nessun allarme, la periferica funziona correttamente)
+                            
+        .row.mt-3
+            .col-12.p-3.shadow-sm.py-3.text-left
+                table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                    thead
+                        tr
+                            th(scope='col').text-center Stato
+                            th(scope='col') Allarme
+                            th(scope='col').text-center Notifiche push 
+                    tbody.text-left
+                        
+                        each val, key in alarms.Alarms
+                            
+                            if key != 'keyStatus' && key != 'ts'
+
+                                tr
+                                    td.text-center(id=key data-status=val)
+                                        svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'alarmed' ? 'text-danger' : 'text-success')
+                                            path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                        if key == 'gasSensor'
+                                            td Gas
+                                        if key == 'siren'
+                                            td Sirena
+                                        if key == 'tamperStatus'
+                                            td Macchina Manomessa
+                                        if key == 'tilt1Status'
+                                            td Tilt 1
+                                        if key == 'tilt2Status'
+                                            td Tilt 2
+                                        td.text-center 
+                                            input.form-check-input(type='checkbox')
+                        
+                        each val, key in coin.CoinAcceptor
+
+                            if key != 'channelsStatus' && key != 'ts'
+                                if key == 'status'
+                                    tr
+                                        td.text-center(id=key+'_coin' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'disabled' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            if key == 'status'
+                                                td Stato Gettoniera
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+                                if key == 'error'
+                                    tr
+                                        td.text-center(id=key+'_coin' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'sensor' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            td Errore Sensori Gettoniera
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+                                    tr
+                                        td.text-center(id=key+'_coin' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'jammed' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            td Errore Monete Inceppate Gettoniera
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+
+                        each val, key in bill.BillValidator
+
+                            if key != 'channelsStatus' && key != 'ts'
+                                if key == 'status'
+                                    tr
+                                        td.text-center(id=key+'_bill' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'disabled' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            if key == 'status'
+                                                td Stato Lettore di Banconote
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+                                if key == 'error'
+                                    tr
+                                        td.text-center(id=key+'_bill' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'sensor' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            td Errore Sensori Lettore di Banconote
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+                                    tr
+                                        td.text-center(id=key+'_bill' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'jammed' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            td Errore Lettore di Banconote inceppato
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+                                    tr
+                                        td.text-center(id=key+'_bill' data-status=val)
+                                            svg.bi.bi-bell-fill.text-success(xmlns="http://www.w3.org/2000/svg"  width="40" height="40" fill="currentColor" viewBox="0 0 16 16" class=val == 'stacker' ? 'text-danger' : 'text-success')
+                                                path(d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z")
+                                            td Errore stacker Lettore di Banconote
+                                            td.text-center 
+                                                input.form-check-input(type='checkbox')
+        
+                table(style='width:100%').table.table-bordered.table-striped 
+                        tr.align-items-center.d-flex.justify-content-between
+                            td
+                               h3 Abilitare notifiche push su App MyMicrohard
+                            td.text-center(style="width: 20%") 
+                                input#autoSizingCheck0.form-check-input(type='checkbox')
+
+        //pulsante Esci
+        //.row.justify-content-center
+            .col-4.mt-5.text-center
+                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                    |  SALVA
+
+    script.
+        let coin_el = document.getElementById('status_coin');
+        let coin_svg = coin_el.querySelector('svg');
+        let coinStatus = `#{coin.CoinAcceptor.status}`
+
+        console.log(`%ccoinStatus: ${coinStatus}`, 'color: #48ff48');
+
+        if(coinStatus === 'offline' || coinStatus === 'inactive' || coinStatus === 'disabled') {
+            coin_svg.classList.add('text-danger')
+        }
+        //- else {
+        //-     if(coinStatus === 'disabled') { coin_svg.classList.add('text-danger') }
+        //-     else if (coinStatus == 'enabled') { coin_svg.classList.add('text-success') }
+        //- }
+
+        let bill_el = document.getElementById('status_bill')
+        let bill_svg = bill_el.querySelector('svg')
+        let billStatus = `#{bill.BillValidator.status}`
+
+        console.log(`%cbillStatus: ${billStatus}`, 'color: #48ff48');
+
+        if(billStatus === 'offline' || billStatus === 'inactive' || billStatus === 'disabled') {
+            bill_svg.classList.add('text-danger')
+        }
+        //- else {
+        //-     if(billStatus == 'disabled') { bill_svg.classList.add('text-danger') }
+        //-     else if (billStatus == 'enabled') { bill_svg.classList.add('text-success') }
+        //- }
+
+    style.
+        input.form-control, button, .btn {
+            font-size: 2rem;
+            margin: 0 auto;
+        }
+
+        .btn.btn-lg {
+            height: 60px;
+            padding: 0 30px;
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            font-size: 2rem;
+        }
+
+        .log-table{
+            background:rgb(31,31,31);
+            margin: 0;
+            padding:0;
+        }
+        table td,table th,table tr{
+            color:white !important;
+            font-size:2rem;
+        }
+
+        .table-bordered > :not(caption) > * {
+            border-width: 7px 0;
+            border-color: rgba(18,18,18);
+        }
+        .table-bordered > :not(caption) > * > * {
+            border-width: 0 7px;
+        }
+        a{
+        color:white;
+        }
+
+        .btn{
+            font-size:2rem;
+        }

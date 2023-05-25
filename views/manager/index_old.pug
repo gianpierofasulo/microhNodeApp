@@ -1,0 +1,127 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h1.display-5.fw-normal.mb-0 Matricola: #{config.matricola}
+            .row
+                .col-12.me-0.text-center
+                    p.fs-5.text-muted
+                    p.fs-5.text-muted
+                        | Versione Software: 1.0.1
+                        br
+                        | IP Macchina: #{ip}
+        main
+            .row
+                .col-12.me-0.text-center
+                    .card.mb-4.rounded-3.shadow-sm
+                        .card-header.py-3.text-bg-success.border-success
+                            h5 Software
+                        .card-body
+                            ul.list-unstyled.mt-3.mb-3.d-flex.row.gx-3
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/generali')
+                                        i.bi.bi-gear
+                                        |  Generali
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/comportamento')
+                                        i.bi.bi-magic
+                                        |  Comportamento
+
+                .col-12.me-0.text-center
+                    .card.mb-4.rounded-3.shadow-sm
+                        .card-header.py-3.text-bg-success.border-success.align-items-center
+                            h5 Prezzi e Contabilit&agrave;
+                        .card-body
+                            ul.list-unstyled.mt-3.mb-3.d-flex.row.gx-3
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/motori')
+                                        i.bi.bi-building-add
+                                        |  Motori
+                                if behavior.vetrina_digitale == '1'
+                                    li.col-4
+                                        a.w-100.btn.btn-lg.btn-success.mb-1(href='/vetrina-digitale')
+                                            i.bi.bi-shop-window
+                                            |  Vetrina digitale
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/contabilita')
+                                        i.bi.bi-cash-coin
+                                        |  Contabilit&agrave;
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/stampe')
+                                        i.bi.bi-receipt-cutoff
+                                        |  Stampe
+                                //li
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='corrispettivi')
+                                        i.bi.bi-currency-euro
+                                        |  Corrispettivi
+                .col-12.me-0.text-center
+                    .card.mb-4.rounded-3.shadow-sm
+                        .card-header.py-3.text-bg-success.border-success
+                            h5 Macchina
+                        .card-body
+                            ul.list-unstyled.mt-3.mb-3.d-flex.row.gx-3
+
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/matricola')
+                                        i.bi.bi-123
+                                        |  Identificativi
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/gpio')
+                                        i.bi.bi-lightbulb
+                                        |  Luci led
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/versioni')
+                                        i.bi.bi-cpu
+                                        |  Periferiche
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/rete')
+                                        i.bi.bi-hdd-network
+                                        |  Rete
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/allarmi')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                                        </svg>
+                                        |  Allarmi
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/log')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                                            <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                        </svg>
+                                        |  Log
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/caricamonete')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
+                                            <path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z"/>
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                                        </svg>
+                                        |  Carica monete        
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/caricamultimedia')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                                        </svg>
+                                        |  Carica multimedia CLOUD
+
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/erogazionemanuale')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-hand-index" viewBox="0 0 16 16">
+                                            <path d="M6.75 1a.75.75 0 0 1 .75.75V8a.5.5 0 0 0 1 0V5.467l.086-.004c.317-.012.637-.008.816.027.134.027.294.096.448.182.077.042.15.147.15.314V8a.5.5 0 1 0 1 0V6.435a4.9 4.9 0 0 1 .106-.01c.316-.024.584-.01.708.04.118.046.3.207.486.43.081.096.15.19.2.259V8.5a.5.5 0 0 0 1 0v-1h.342a1 1 0 0 1 .995 1.1l-.271 2.715a2.5 2.5 0 0 1-.317.991l-1.395 2.442a.5.5 0 0 1-.434.252H6.035a.5.5 0 0 1-.416-.223l-1.433-2.15a1.5 1.5 0 0 1-.243-.666l-.345-3.105a.5.5 0 0 1 .399-.546L5 8.11V9a.5.5 0 0 0 1 0V1.75A.75.75 0 0 1 6.75 1zM8.5 4.466V1.75a1.75 1.75 0 1 0-3.5 0v5.34l-1.2.24a1.5 1.5 0 0 0-1.196 1.636l.345 3.106a2.5 2.5 0 0 0 .405 1.11l1.433 2.15A1.5 1.5 0 0 0 6.035 16h6.385a1.5 1.5 0 0 0 1.302-.756l1.395-2.441a3.5 3.5 0 0 0 .444-1.389l.271-2.715a2 2 0 0 0-1.99-2.199h-.581a5.114 5.114 0 0 0-.195-.248c-.191-.229-.51-.568-.88-.716-.364-.146-.846-.132-1.158-.108l-.132.012a1.26 1.26 0 0 0-.56-.642 2.632 2.632 0 0 0-.738-.288c-.31-.062-.739-.058-1.05-.046l-.048.002zm2.094 2.025z"/>
+                                        </svg>
+                                        |  Erogazione manuale
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/testperiferiche')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
+                                        </svg>
+                                        |  Test periferiche 
+                                li.col-4
+                                    a.w-100.btn.btn-lg.btn-success.mb-1(href='/caricamultimediausb')
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-usb-drive" viewBox="0 0 16 16">
+                                            <path d="M6 .5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4H6v-4ZM7 1v1h1V1H7Zm2 0v1h1V1H9ZM6 5a1 1 0 0 0-1 1v8.5A1.5 1.5 0 0 0 6.5 16h4a1.5 1.5 0 0 0 1.5-1.5V6a1 1 0 0 0-1-1H6Zm0 1h5v8.5a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V6Z"/>
+                                        </svg>
+                                        |  Carica multimedia USB
+                               

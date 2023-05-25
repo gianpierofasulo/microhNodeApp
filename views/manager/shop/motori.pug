@@ -1,0 +1,147 @@
+extends ../layout.pug
+
+block layout-content
+
+    //script
+        include ../../../src/js/channels.js
+
+    #vetrina.container-fluid.pt-5.menu-manager.motori
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-building-add
+                | Erogatori #{type}
+
+        main(id='motori_'+type)
+            .row.text-center
+                div(style='height: auto; max-height:750px; overflow: scroll').text-center.canali.d-flex
+                    each canale in canali
+                        if canale.stato === 'Disabilitato' || canale.stato === 'Errore'
+                            .canale.col-6.m3(class="non-selezionabile")
+                                   span #{canale.canale}
+                        else
+                            if canale.prodotto_id == null
+                                .canale.col-6.m3(class="disponibile bg-secondary canale-"+canale.canale data-channel=canale.canale onclick="get_product('"+ type +"',"+ canale.prodotto_id + ","+ canale.canale +","+ canale.alias +")")
+                                    //h3 #{canale.canale}
+                                    h3 #{canale.alias}
+                            else
+                                .canale.col-6.m3(class="occupato bg-danger canale-"+canale.canale data-channel=canale.canale onclick="get_product('"+ type +"',"+ canale.prodotto_id + ","+ canale.canale +","+ canale.alias +")")
+                                    //h3 #{canale.canale}
+                                    h3 #{canale.alias}
+
+            //corpo
+            #form-salvataggio-canale.row.ps-3.pt-3
+                .row
+                    //.col-3.mt-4
+                        button#salva-canale.btn.btn-light.btn-lg(href='#' role='button' style='width:200px;height:50px').align-items-center.d-flex.justify-content-center Carica da listino
+                    .col-8.mt-4.d-flex
+                        input#formBarcode.col-7(type="text")
+                        button#seleziona-barcode.col-5.btn.bg-primary.align-items-center.d-flex.justify-content-center.ms-3(onclick="barcode_search()")
+                            i.bi.bi-upc-scan.me-3
+                            span Cerca
+                    .col-4.mt-4.d-flex.justify-content-end
+                        button#cancella-canale.btn.btn-danger.btn-lg.align-items-center.d-flex.justify-content-center(onClick="remove_channel('"+type+"')")
+                            i.bi.bi-trash3.me-3
+                            span Svuota
+
+                .row
+                    form#update_prod
+                        .row
+                            .form-group.col-md-2.mt-3
+                                label(for='formAlias') Alias n°
+                                input#formAlias.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='number' name="alias" style='height:50px; color:gray')
+                            .form-group.col-md-6.mt-3
+                                label(for='formNome') Nome Prodotto
+                                input#formNome.form-control.js-kioskboard-input(required data-kioskboard-specialcharacters="true" type='text' name="titolo")
+                            .form-group.col-md-4.mt-3
+                                label(for='formPrezzo') Prezzo Prodotto
+                                input#formPrezzo.form-control.js-kioskboard-input(required data-kioskboard-specialcharacters="true" type='number' name="prezzo")
+                        .row
+                            .form-group.col-md-3.mt-3
+                                label(for='Profondita') Profondità
+                                input#Profondita.form-control.js-kioskboard-input(required data-kioskboard-specialcharacters="true" type='number' name="profondita")
+                            .form-group.col-md.mt-3
+                                label(for='larghezza') Larghezza
+                                input#larghezza.form-control.js-kioskboard-input(required data-kioskboard-specialcharacters="true" type='number' name="larghezza")
+                            .form-group.col-md.mt-3
+                                label(for='related') Motore principale
+                                input#related.form-control.js-kioskboard-input(required data-kioskboard-specialcharacters="true" type='number' name="related")
+
+                            .form-group.col-md.mt-3
+                                label(for='codice_a_barre') Codice prodotto
+                                input#codice.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' name="codice_a_barre")
+                        .row
+                            .form-group.col-md.mt-3
+                                label(for='immagine') Immagine
+                                //input#immagine.form-control.col-6.js-kioskboard-input.hide(data-kioskboard-specialcharacters="true" type='text' name="immagine")
+                                div 
+                                    img#img(width="150px" height="auto")
+                            .form-group.col-md-9.mt-3
+                                label(for='descrizione') Descrizione prodotto
+                                textarea#descrizione.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' name="descrizione")
+                        .row.mt-3
+                            .form-group.col-3.d-flex.align-items-center
+                                input#minori.form-check-input(type='checkbox' onclick="clickCheck('minori')" name="ristretto_per_minori" value="0")
+                                label.form-check-label.ms-3(for='minori')
+                                    | Solo maggiorenni
+                            .form-group.col-3.d-flex.align-items-center
+                                input#vendibile.form-check-input(type='checkbox' onclick="clickCheck('vendibile')" name="vendibile" value="0")
+                                label.form-check-label.ms-3(for='vendibile')
+                                    | Vendibile
+                            .form-group.col-3.d-flex.align-items-center
+                                input#otc.form-check-input(type='checkbox' onclick="clickCheck('otc')" name="vendibile_via_web" value="0")
+                                label.form-check-label.ms-3(for='otc')
+                                    | Vendibile OTC
+                            .form-group.col-3.d-flex.align-items-center
+                                input#esenteIva.form-check-input(type='checkbox'  onclick="clickCheck('esenteIva')" name="codice_iva" value="0")
+                                label.form-check-label.ms-3(for='esenteIva')
+                                    | Esente IVA
+                                    //i.bi.bi-info-circle.col-md.m-0.mt-3
+                                    i.bi.bi-info-circle(data-bs-toggle='tooltip' data-bs-placement='right' title='prova di testo del tooltip').px-3
+                            //.form-check.col-md.mt-3
+                            input#FormProdotto.form-control(type='hidden' name="id_prodotto")
+                            input#FormCanale.form-control(type='hidden' name="canale")
+                        
+                        .row
+                            .form-group.col-md.mt-3
+                                label(for='subcategory') Categoria Prodotto
+                                div
+                                    select#categoriaProdotto.col-6.ps-3(name="subcategory")
+
+                .row.justify-content-center.mt-5.actions-buttons
+                    .col-4.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.p-4(onclick="update_channel('"+type+"')")
+                                i.bi.bi-check-circle.me-3
+                                span Salva
+
+    script.
+
+        document.querySelectorAll('input[type=checkbox]')
+            .forEach(function (item) {
+                if (item.value == 1) {
+                    item.checked = true
+                }
+            })
+
+        clickCheck = (id) => {
+            let check = document.getElementById(id);
+            console.log(check.checked)
+            if(check.checked == 1){
+                check.value = 1
+            }else{
+                check.value = 0
+            }
+        }
+
+    style.
+        #form-salvataggio-canale{
+            opacity:0.5;
+            pointer-events:none;
+        }
+
+        #form-salvataggio-canale.active{
+            opacity:1;
+            pointer-events:auto !important;
+        }
+        button#cancella-canale {
+            width: 80%;
+        }

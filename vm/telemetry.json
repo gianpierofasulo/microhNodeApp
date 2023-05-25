@@ -1,0 +1,318 @@
+{
+  "Boards": {
+    "status" : [{
+        "model" : "MH624",
+        "status" : "active"
+      }, {
+        "model" : "MH625",
+        "status" : "active"
+      }, {
+        "model" : "MH634-0",
+        "status" : "active"
+      }, {
+        "model" : "MH634-1",
+        "status" : "active"
+      }, {
+        "model" : "MH634-1",
+        "status" : "active"
+      }, {
+        "model" : "DISP-0",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-1",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-2",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-3",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-4",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-5",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-6",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-7",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-8",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-9",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-10",
+        "status" : "offline"
+      }, {
+        "model" : "DISP-11",
+        "status" : "offline"
+      }, {
+        "model" : "LOCKER-0",
+        "status" : "offline"
+      }, {
+        "model" : "LOCKER-1",
+        "status" : "offline"
+      }, {
+        "model" : "LOCKER-2",
+        "status" : "offline"
+      }],
+    "ts" : 1676124646
+  },
+  "CoinAcceptor":  {
+    "channelsStatus" : [{
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 0,
+        "value" : 5
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 0,
+        "value" : 10
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 0,
+        "value" : 20
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 2,
+        "value" : 50
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 0,
+        "value" : 100
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "quantity" : 0,
+        "value" : 200
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : false,
+        "quantity" : 0,
+        "value" : 0
+      }],
+    "error" : "none",
+    "status" : "enabled",
+    "ts" : 1676124646
+  },
+  "BillValidator":  {
+    "channelsStatus" : [{
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 500
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 1000
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 2000
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 5000
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }, {
+        "currency" : "1978",
+        "enabled" : true,
+        "escrow" : false,
+        "quantity" : 0,
+        "value" : 0
+      }],
+    "error" : "none",
+    "status" : "enabled",
+    "ts" : 1676124646
+  },
+  "Dispensers":  {
+    "channelStatus" : [{
+        "quantity" : 1,
+        "status" : "enabled",
+        "value" : 0
+      }, {
+        "quantity" : 1,
+        "status" : "enabled",
+        "value" : 0
+      }],
+    "group" : "A",
+    "ts" : 1676124648
+  },
+  "OpticalBarrier":  {
+    "status" : "open",
+    "ts" : 1676124646
+  },
+  "Bulkhead": {
+    "status" : "closed",
+    "ts" : 1676124646
+  },
+  "ProductDoor": {
+    "status" : "closed",
+    "ts" : 1676124646
+  },
+  "BarcodeReader": {
+        "status": "enabled",
+        "ts": 1676125709
+  },
+  "AgeValidator":  {
+    "card" : "none",
+    "status" : "ready",
+    "ts" : 1676124646
+  },
+  "Alarms": {
+    "gasSensor" : "normal",
+    "keyStatus" : "enabled",
+    "siren" : "normal",
+    "tamperStatus" : "normal",
+    "tilt1Status" : "normal",
+    "tilt2Status" : "normal",
+    "ts" : 1676124646
+  },
+  "Temperatures": {
+    "frameFan" : 100,
+    "frameTemp" : 35,
+    "monitorFan1" : 0,
+    "monitorFan2" : 0,
+    "monitorTemp" : 24,
+    "ts" : 1676124646
+  },
+  "Power": {
+    "batteryLevel" : 28,
+    "power" : "main",
+    "ts" : 1676124646
+  },
+  "GPIO": {
+    "mainLight" : "off",
+    "productLight" : "off",
+    "programButton" : false,
+    "refrigerator" : "off",
+    "ts" : 1676124646,
+    "uvLight" : 0
+  }
+}

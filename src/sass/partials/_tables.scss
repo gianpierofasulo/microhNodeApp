@@ -1,0 +1,45 @@
+table.x-table td, table.x-table th, table.x-table tr {
+    color: white !important;
+    font-size: 2rem !important;
+    line-height: 60px !important;
+}
+
+table.x-table td,table.x-table th{
+  padding: 8px;
+  text-align: left;
+}
+
+input.form-control, 
+button, 
+.btn {
+    font-size: 2rem;
+    margin: 0 auto;
+}
+
+.btn.btn-lg {
+    height: 60px;
+    padding: 0 30px;
+}
+
+textarea.form-control {
+    min-height: 200px;
+    font-size: 2rem;
+}
+
+.log-table{
+    background:rgb(31,31,31);
+    margin: 0;
+    padding:0;
+}
+table td,table th,table tr{
+    color:white !important;
+    font-size:2rem;
+}
+
+.table-bordered > :not(caption) > * {
+    border-width: 7px 0;
+    border-color: rgba(18,18,18);
+}
+.table-bordered > :not(caption) > * > * {
+    border-width: 0 7px;
+}

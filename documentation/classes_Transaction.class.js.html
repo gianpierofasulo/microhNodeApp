@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> classes/Transaction.class.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-qrcode.html">qrcode</a></li><li><a href="module-receipt.html">receipt</a></li></ul><h3>Classes</h3><ul><li><a href="AgeValidator.html">AgeValidator</a></li><li><a href="Alarms.html">Alarms</a></li><li><a href="AppSocket.html">AppSocket</a></li><li><a href="BarcodeReader.html">BarcodeReader</a></li><li><a href="BillValidator.html">BillValidator</a></li><li><a href="Boards.html">Boards</a></li><li><a href="Bulkhead.html">Bulkhead</a></li><li><a href="CoinAcceptor.html">CoinAcceptor</a></li><li><a href="Dispensers.html">Dispensers</a></li><li><a href="GPIO.html">GPIO</a></li><li><a href="MqttHandler.html">MqttHandler</a></li><li><a href="OpticalBarrier.html">OpticalBarrier</a></li><li><a href="Power.html">Power</a></li><li><a href="Printer.html">Printer</a></li><li><a href="ProductDoor.html">ProductDoor</a></li><li><a href="Status.html">Status</a></li><li><a href="Temperatures.html">Temperatures</a></li><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apiRoutes">apiRoutes</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#cancellaFile">cancellaFile</a></li><li><a href="global.html#getAlarmsStatus">getAlarmsStatus</a></li><li><a href="global.html#getBillValidatorStatus">getBillValidatorStatus</a></li><li><a href="global.html#getBulkheadStatus">getBulkheadStatus</a></li><li><a href="global.html#getCoinAcceptorStatus">getCoinAcceptorStatus</a></li><li><a href="global.html#getDispensersStatus">getDispensersStatus</a></li><li><a href="global.html#getGpioStatus">getGpioStatus</a></li><li><a href="global.html#getProductdoorStatus">getProductdoorStatus</a></li><li><a href="global.html#http">http</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#inviaTotali">inviaTotali</a></li><li><a href="global.html#loadNetwork">loadNetwork</a></li><li><a href="global.html#mqttHandler">mqttHandler</a></li><li><a href="global.html#periferiche">periferiche</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#setNetwork">setNetwork</a></li><li><a href="global.html#socketConsumer">socketConsumer</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>classes/Transaction.class.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Utils = require('./Utils.class')
+const ConfigController = require('../controllers/config.controller')
+const config = ConfigController.getConfig('generali');
+const JSONStore = require('./JsonStore.class')
+const activeTransaction = './public/data/transaction/active-transaction.json';
+const transactionList = './public/data/transaction/transaction-list.json';
+const Logger = require('./Logger.class');
+const ChannelController = require('../controllers/channels.controller');
+
+/**
+ * Sati della Transazione
+ * 
+ * New - Apertura
+ * Pending - Inserimento denaro o scelta prodotto
+ * Complete - Pagamento avvenuto
+ * Cancelled - Annullamento transazione
+ * 
+ */
+
+module.exports = class Transaction {
+    
+    constructor() {
+
+        let transaction = this.initTransaction();
+        return transaction;
+
+    }
+
+
+    checkTransaction = () => {
+          let Store = new JSONStore(activeTransaction);
+          let active = Store.read();
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_TRANSACTION == 1) {
+                console.log('@@ DATA FROM TRANSACTION',active);
+            }
+          
+          if(active){
+            return active;
+          }else{
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_TRANSACTION == 1) {
+                console.log('@@ DATA FROM TRANSACTION',active);
+            }
+            return false;
+            
+          }
+          
+    }
+
+    
+
+    initTransaction(){
+
+        let active_transaction = this.checkTransaction();
+        
+        console.log('active trans',active_transaction)
+
+        if(active_transaction.id != null){
+            this.id = active_transaction.id;
+            this.date = active_transaction.date;
+            this.matricola = active_transaction.matricola;
+            this.prodotto = active_transaction.prodotto;
+            this.prezzo_prodotto = active_transaction.prezzo_prodotto;
+            this.canale = active_transaction.canale;
+            this.state = active_transaction.state;
+            this.totale = active_transaction.totale;
+            this.incasso_banconote = active_transaction.incasso_banconote;
+            this.incasso_monete = active_transaction.incasso_monete;
+            this.incasso_pos = active_transaction.incasso_pos;
+            this.incasso_cashless = active_transaction.incasso_cashless;
+            this.incasso_scontrino = active_transaction.incasso_scontrino;
+            this.resto_monete = active_transaction.resto_monete;
+            this.resto_scontrino = active_transaction.resto_scontrino; 
+        }else{
+            console.log('new',active_transaction)
+            const today = new Date();
+            const date = today.toLocaleDateString('it-IT', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            this.date = date;
+            this.id = 't-' + Utils.getTimestampInSeconds();
+            this.matricola = config.matricola;
+            this.prodotto = null;
+            this.prezzo_prodotto = 0;
+            this.canale = null;
+            this.state = 'pending';
+            this.totale = 0;
+            this.incasso_banconote = 0;
+            this.incasso_monete = 0;
+            this.incasso_pos = 0;
+            this.incasso_cashless = 0;
+            this.incasso_scontrino = 0;
+            this.resto_monete = 0;
+            this.resto_scontrino = 0;
+        }
+
+        return this;
+        
+        
+    }
+
+    setState(state){
+        this.state = state;
+    } 
+
+    setValues(cash,type){
+
+        this.totale += cash;
+
+        if(type == 'banconota'){
+            this.incasso_banconote += cash;
+        }
+         if(type == 'cashless'){
+            this.incasso_cashless += cash;
+        }
+        if(type == 'moneta'){
+            this.incasso_monete += cash;
+        }
+        if(type == 'scontrino'){
+            this.incasso_scontrino += cash;
+        }
+
+    }
+
+    setChannel(canale){
+        this.canale = canale;
+    }
+    setProduct(prodotto_id,prezzo_prodotto){
+        this.prodotto = prodotto_id;
+        this.prezzo_prodotto = prezzo_prodotto;
+    }
+
+    setResto(type,value){
+        if(type == 'scontrino') this.resto_scontrino = value;
+        if(type == 'monete') this.resto_monete = value;
+    }
+
+    saveTransaction(){
+
+        const transaction = {
+            id: this.id,
+            matricola: this.matricola,
+            state: this.state,
+            totale: this.totale,
+            date: this.date,
+            prodotto :this.prodotto,
+            prezzo_prodotto: this.prezzo_prodotto,
+            canale: this.canale,
+            incasso_banconote: this.incasso_banconote,
+            incasso_monete: this.incasso_monete,
+            incasso_pos :this.incasso_pos,
+            incasso_cashless: this.incasso_cashless,
+            incasso_scontrino: this.incasso_scontrino,
+            resto_monete :this.resto_monete,
+            resto_scontrino :this.resto_scontrino
+        };
+
+        let Store = new JSONStore(activeTransaction);
+        Store.write(transaction);
+
+        //Log
+        const log = {
+            id: this.id,
+            state: this.state,
+            icon: 'bi-cash-stack text-warning',
+            description: 'Scrittura nuova transazione'
+        }
+        Logger.log('transaction',log);
+        return transaction;
+
+    }
+
+    setState(state){
+        this.state = state;
+    }
+
+
+    completeTransaction(){
+
+        this.setState('complete');
+
+        const transaction = {
+            id: this.id,
+            matricola: this.matricola,
+            state: this.state,
+            totale: this.totale,
+            date: this.date,
+            prodotto :this.prodotto,
+            prezzo_prodotto : this.prezzo_prodotto,
+            canale: this.canale,
+            incasso_banconote: this.incasso_banconote,
+            incasso_monete: this.incasso_monete,
+            incasso_pos :this.incasso_pos,
+            incasso_cashless: this.incasso_cashless,
+            incasso_scontrino: this.incasso_scontrino,
+            resto_monete :this.resto_monete,
+            resto_scontrino :this.resto_scontrino
+        };
+
+        let StoreTransactions = new JSONStore(transactionList);
+        let list = StoreTransactions.read();
+        if(list){
+            list.push(transaction);
+            StoreTransactions.write(list);
+        } else{
+            list = [];
+            list.push(transaction);
+            StoreTransactions.write(list);
+
+        } 
+
+        //Svuoto active
+        let Store = new JSONStore(activeTransaction);
+        Store.write(null);
+
+
+        //Log
+        const log = {
+            id: this.id,
+            state: this.state,
+            icon: 'bi-cash-stack text-success',
+            description: `Transazione ${this.state}`
+        }
+
+        Logger.log('transaction',log);
+
+
+
+        return this;
+
+    }
+
+
+    static lastTransaction(array){
+        const lastTransaction = array[array.length - 1];
+        return lastTransaction
+    }
+
+
+
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

@@ -1,0 +1,840 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        nav.breadcrumb-container(aria-label='Percorso di navigazione')
+            ol.breadcrumb
+                li.breadcrumb-item
+                    a(href='/').text-decoration-none Home
+                li.breadcrumb-item.active(aria-current='testperiferiche') Test periferiche
+
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h1.display-5.fw-normal.mb-0
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-activity" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z"/>
+                </svg>
+                |  Test periferiche
+            .row
+                .col-12.me-0.text-center
+                    p.fs-5.text-muted
+                    p.fs-5.text-muted
+                        | Versione Software: 1.0.1
+                        br
+                        | IP Macchina: #{ip.ip}
+        main
+            .row.p-3
+                .col-6.me-0.text-center(style="padding-top: 20px;")
+                  h2 STATO
+                        table(style='width:100%; margin-top: 20px;').table
+                            tbody
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Chiave allarme
+                                    td.text-center.stato-waiting#keystatus waiting
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Tamper allarme
+                                    td.text-center.stato-waiting#tamper waiting     
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Tilt allarme 1
+                                    td.text-center.stato-waiting#tilt1 waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Tilt allarme 2
+                                    td.text-center.stato-waiting#tilt2 waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Gas allarme
+                                    td.text-center.stato-waiting#gas waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Paratia
+                                    td.text-center.stato-waiting#bulkhead waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Barriera ottica
+                                    td.text-center.stato-waiting#opticalbarrier waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Temperatura vano elettronica
+                                    td.text-center.stato-waiting#frametemp waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Temperatura monitor
+                                    td.text-center.stato-waiting#monitortemp waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Gettoniera
+                                    td.text-center.stato-waiting#coin waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Lettore di banconote
+                                    td.text-center.stato-waiting#bill waiting 
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") Power
+                                    td.text-center.stato-waiting#power waiting 
+                          
+                       
+                .col-6.me-0.text-center(style="padding: 20px;")
+                  h2 TEST
+                        table(style='width:100%; margin-top: 20px;').table
+                            tbody
+                                tr
+                                    td.text-end(style="width:70%;") Paratia
+                                    td.form-check.form-switch(style="width:30%; border-bottom:none;") 
+                                        input#bulkheadcheckbox.form-check-input(type='checkbox' value="" name="bulkheadcheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Sirena
+                                    td.text-end.form-check.form-switch(style="width:30%; border-bottom:none;")
+                                        input#sirencheckbox.form-check-input(type='checkbox' value="" name="sirencheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Led
+                                    td.form-check.form-switch(style="width:30%; border-bottom:none;") 
+                                        input#ledcheckbox.form-check-input(type='checkbox' value="" name="ledcheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Luci ritiro prodotto
+                                    td.text-end.form-check.form-switch(style="width:30%; border-bottom:none;")
+                                        input#lucicheckbox.form-check-input(type='checkbox' value="" name="lucicheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Luci UV
+                                    td.text-end.form-check.form-switch(style="width:30%; border-bottom:none;")
+                                        input#uvcheckbox.form-check-input(type='checkbox' value="" name="uvcheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Portello ritiro prodotto
+                                    td.text-end.form-check.form-switch(style="width:30%; border-bottom:none;")
+                                        input#ritirocheckbox.form-check-input(type='checkbox' value="" name="ritirocheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Ventole elettronica
+                                    td.form-check.form-switch(style="width:30%; border-bottom:none;") 
+                                        input#framefancheckbox.form-check-input(type='checkbox' value="" name="framefancheckbox")
+                                tr
+                                    td.text-end(style="width:70%;") Ventola monitor 1
+                                    td.form-check.form-switch(style="width:30%; border-bottom:none;") 
+                                        input#monitorfan1checkbox.form-check-input(type='checkbox' value="" name="monitorfan1checkbox")
+                                tr
+                                    td.text-end(style="width:70%;") Ventola monitor 2
+                                    td.form-check.form-switch(style="width:30%; border-bottom:none;") 
+                                        input#monitorfan2checkbox.form-check-input(type='checkbox' value="" name="monitorfan2checkbox")
+                        
+                hr
+                .row.justify-content-center
+                    .col-12.text-center
+                            h1 Periferiche
+                    .col-12.text-center
+                            h2 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                </svg> Inserisci monete o banconote per testarne l'accettazione
+                    .col-6
+                         table(style='width:100%; margin-top: 20px;').table 
+                            tbody
+                                tr(style="height: 60px;")
+                                    td.text-center(colspan="2") 
+                                        h2 Taglio quantità banconota testata
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 5,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#bill5 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 10,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#bill10 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2#bill20 20,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 50,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#bill50 0
+
+                    .col-6
+                        table(style='width:100%; margin-top: 20px;').table
+                            tbody
+                                tr(style="height: 60px;")
+                                    td.text-center(colspan="2") 
+                                        h2 Taglio quantità moneta testata
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 0,05 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin5 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 0,10 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin10 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 0,20 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin20 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 0,50 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin50 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 1,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin100 0
+                                tr(style="height: 60px;")
+                                    td.text-end(style="width:70%;") 
+                                        h2 2,00 &euro;
+                                    td.text-center(style="width:30%;") 
+                                        h2#coin200 0
+                    hr
+                    .row.text-center
+                            h2 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                </svg> Seleziona test stampante per avere un barcode da testare
+                    .row.justify-content-center
+                        .col-6.mt-5.text-center
+                                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                                    |  TEST STAMPANTE
+                        .col-6.mt-5.text-center
+                                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                                    |  TEST BARCODE
+                    .row.justify-content-center(style="margin-top: 30px;")
+                        textarea.form-control(col="100" rows="10")
+                    
+                    hr(style="margin-top: 30px;")
+
+                    .row.justify-content-center
+                        .col-6.mt-5.text-center
+                                a.w-100.btn.btn-lg.btn-success.mb-1.p-4(href='?' type='button')
+                                    |  TEST EROGA RESTO
+                        .col-6.mt-5.text-center
+                                    h1  &euro; 0,00
+
+    script(src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js")
+    script.
+        
+        // ********************************
+        // MQTT > Mosquitto
+        // ********************************
+        // const host = 'test.mosquitto.org'
+        const ip = `#{ip.ip}`
+        const portWs = '8080'
+        const clientId = `microhard_${Math.random().toString(16).slice(3)}`
+        let options = {
+            clientId: clientId,
+            clean: true,
+            keepalive: 60,
+            reconnectPeriod: 1000,
+            connectTimeout: 30 * 1000
+        }
+        const connectUrlWs = `ws://${ip}:${portWs}`
+        const client = mqtt.connect(connectUrlWs, options)
+        
+        // ********************************
+        // MQTT > HWBroker
+        // ********************************
+        const topicReset = 'Broadcast/command/reset'
+        // const topicReset = 'HWBroker/command/reset'
+        // let messaggio = { "ts": 123 } // funziona ma non benissimo!
+        // let messaggio = { "ts": parseInt(Date.now()/1000) } // funziona ma non benissimo!
+        let messaggio = { "ts": Date.now() } // FUNZIONA AL TOP!
+        client.publish(topicReset, JSON.stringify(messaggio), { qos: 1, retain: false }, (error) => {
+            if (error) {
+                console.error(error)
+            }
+        })
+
+        // ********************************
+        // MQTT > subscribe
+        // ********************************
+        // - allarmi / sirena / fans
+        // - paratia
+        // - barriera ottica
+        // - temperatura
+        // - gpio / led
+        // - coinacceptor
+        // - billvalidator
+        // - power
+        
+
+        let topics = [
+            'Alarms/telemetry/status',
+            'Bulkhead/telemetry/status',
+            'OpticalBarrier/telemetry/status',
+            'Temperatures/telemetry/status',
+            'GPIO/telemetry/status',
+            'CoinAcceptor/telemetry/status',
+            'CoinAcceptor/telemetry/cashIn',
+            'BillValidator/telemetry/status',
+            'BillValidator/telemetry/cashIn',
+            'Power/telemetry/status'
+        ]
+
+        for (let topic of topics) {
+            console.log('topic -->',topic)
+            client.subscribe([topic], () => {
+                console.log(`Subscribed to topic: '${topic}'`)
+            })
+        }
+
+        // ********************************
+        // MQTT > on message
+        // ********************************
+        client.on('message', (topic, message) => {
+            console.log('MQTT > received message:', topic, message.toString())
+            let parsedMessage = JSON.parse(message)
+
+            // ****************************************************************
+            // TELEMETRY
+            // ****************************************************************
+
+            // ********************************
+            // updateStatus
+            // ********************************
+
+            function updateStatus(id, stato) {
+                //console.log(stato)
+                //console.log(id)
+                document.getElementById(id).textContent = stato;
+                if(stato === 'disabled' || stato === 'alarmed') {
+                    document.getElementById(id).classList.add('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-normal');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                } 
+                else if(stato === 'enabled' || stato === 'normal') {
+                    document.getElementById(id).classList.add('stato-normal');
+                    document.getElementById(id).classList.remove('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                }
+                else if(stato === 'battery') {
+                    document.getElementById(id).classList.add('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-normal');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                } 
+                else if(stato === 'main') {
+                    document.getElementById(id).classList.add('stato-normal');
+                    document.getElementById(id).classList.remove('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                }
+                else if(stato === 'open') {
+                    if(id === 'opticalbarrier') {
+                        document.getElementById(id).classList.add('stato-normal');
+                        document.getElementById(id).classList.remove('stato-alarmed');
+                        document.getElementById(id).classList.remove('stato-moving');
+                        document.getElementById(id).classList.remove('stato-waiting');
+                    }
+                    else if (id === 'bulkhead') { // paratia aperta
+                        document.getElementById(id).classList.add('stato-alarmed');
+                        document.getElementById(id).classList.remove('stato-normal');
+                        document.getElementById(id).classList.remove('stato-moving');
+                        document.getElementById(id).classList.remove('stato-waiting');
+                    }
+                }
+                else if(stato === 'closed') {
+                    if(id === 'opticalbarrier') {
+                        document.getElementById(id).classList.add('stato-alarmed');
+                        document.getElementById(id).classList.remove('stato-normal');
+                        document.getElementById(id).classList.remove('stato-moving');
+                        document.getElementById(id).classList.remove('stato-waiting');
+                    }
+                    else if (id === 'bulkhead') { // paratia chiusa
+                        document.getElementById(id).classList.add('stato-normal');
+                        document.getElementById(id).classList.remove('stato-alarmed');
+                        document.getElementById(id).classList.remove('stato-moving');
+                        document.getElementById(id).classList.remove('stato-waiting');
+                    }
+                }
+                else if(stato === 'moving') {
+                    document.getElementById(id).classList.add('stato-moving');
+                    document.getElementById(id).classList.remove('stato-normal');
+                    document.getElementById(id).classList.remove('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                }
+                else if(stato > 0) {
+                    document.getElementById(id).classList.add('stato-normal');
+                    document.getElementById(id).classList.remove('stato-alarmed');
+                    document.getElementById(id).classList.remove('stato-waiting');
+                    if(stato > 30) {
+                        document.getElementById(id).classList.add('stato-alarmed');
+                        document.getElementById(id).classList.remove('stato-normal');
+                    }
+                }
+            }
+
+            function updateCheckbox(id, stato) {
+                let idCheckbox = id + 'checkbox';
+                //- console.log(id)
+                //- console.log(stato)
+                //- console.log(idCheckbox)
+                if(id === 'bulkhead') {
+                    document.getElementById(idCheckbox).checked = stato === 'open';
+                }
+                if(id === 'siren') {
+                    document.getElementById(idCheckbox).checked = stato === 'alarmed';
+                }
+                if(id === 'framefan') {
+                    document.getElementById(idCheckbox).checked = stato > 0;
+                }
+                if(id === 'monitorfan1') {
+                    document.getElementById(idCheckbox).checked = stato > 0;
+                }
+                if(id === 'monitorfan2') {
+                    document.getElementById(idCheckbox).checked = stato > 0;
+                }
+            }
+            
+            // ********************************
+            // ALARMS
+            // ********************************
+            if (topic === 'Alarms/telemetry/status') {
+                if (parsedMessage.keyStatus != '') {
+                    updateStatus("keystatus", parsedMessage.keyStatus);
+                }
+
+                if (parsedMessage.tamperStatus != '') {
+                    updateStatus("tamper", parsedMessage.tamperStatus);
+                }
+
+                if (parsedMessage.tilt1Status != '') {
+                    updateStatus("tilt1", parsedMessage.tilt1Status);
+                }
+
+                if (parsedMessage.tilt2Status != '') {
+                    updateStatus("tilt2", parsedMessage.tilt2Status);
+                }
+
+                if (parsedMessage.gasSensor != '') {
+                    updateStatus("gas", parsedMessage.gasSensor);
+                }
+
+                if (parsedMessage.siren != '') {
+                    updateCheckbox("siren", parsedMessage.siren);
+                }
+            }
+
+            // ********************************
+            // PARATIA
+            // ********************************
+            if (topic === 'Bulkhead/telemetry/status') {
+                if (parsedMessage.status != '') {
+                    updateStatus("bulkhead", parsedMessage.status);
+                    updateCheckbox("bulkhead", parsedMessage.status);
+                }                 
+            }
+
+            // ********************************
+            // BARRIERA OTTICA
+            // ********************************
+            if (topic === 'OpticalBarrier/telemetry/status') {
+                if (parsedMessage.status != '') {
+                    updateStatus("opticalbarrier", parsedMessage.status);
+                }
+            }
+
+            // ********************************
+            // TEMPERATURES
+            // ********************************
+            if (topic === 'Temperatures/telemetry/status') {
+                if (parsedMessage.frameTemp != null) {
+                    updateStatus("frametemp", parsedMessage.frameTemp);
+                }
+                if (parsedMessage.monitorTemp != null) {
+                    updateStatus("monitortemp", parsedMessage.monitorTemp);   
+                }
+                if (parsedMessage.frameFan >= 0) {
+                    // FIXME: disabilitare temperatures
+                    // updateCheckbox("framefan", parsedMessage.frameFan);
+                }
+                if (parsedMessage.monitorFan1 >= 0) {
+                    // FIXME: disabilitare temperatures
+                    // updateCheckbox("monitorfan1", parsedMessage.monitorFan1);
+                }
+                if (parsedMessage.monitorFan2 >= 0) {
+                    // FIXME: disabilitare temperatures
+                    // updateCheckbox("monitorfan2", parsedMessage.monitorFan2);
+                }
+            }
+
+            // ********************************
+            // POWER
+            // ********************************
+            if (topic === 'Power/telemetry/status') {
+                if (parsedMessage.power != '') {
+                    updateStatus("power", parsedMessage.power);
+                }
+            }
+
+            // ********************************
+            // GPIO
+            // ********************************
+            if (topic === 'GPIO/telemetry/status') {
+
+                //- "programButton" : bool, // indica se il pulsante di programmazione e’ premuto 
+                //- "mainLight" : string, // "on", "off", "blink"
+                //- "productLight" : string, // "on", "off", "blink"
+                //- "uvLight" : int // percentuale di intensita’ (0..100)
+                //- "refrigerator" : string, // "on", "off"
+
+                if (parsedMessage.mainLight == 'on' || parsedMessage.mainLight == 'blink') {
+                    // ...
+                } else {
+                    // ...
+                }
+                if (parsedMessage.productLight == 'on' || parsedMessage.mainLight == 'blink') {
+                    // ...
+                } else {
+                    // ...
+                }
+                if (parsedMessage.uvLight > 0) {
+                    // ...
+                } else {
+                    // ...
+                }
+                if (parsedMessage.refrigerator == 'on') {
+                    // ...
+                } else {
+                    // ...
+                }
+            }
+
+            // ********************************
+            // COIN
+            // ********************************
+            
+            if (topic === 'CoinAcceptor/telemetry/status') {
+                if (parsedMessage.status != '') {
+                    if (parsedMessage.status === 'disabled') {
+                        let body = { ts: 123 }
+                        let command = {}
+                        let mqttObject = {}
+                        // abilito gettoniera
+                        command = {
+                            channelsList : [ { "enabled": true },  { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true } ],
+                            ts: Number(body.ts) // int
+                        }
+                        mqttObject = {
+                            topic : 'CoinAcceptor/command/enable', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                            message : command
+                        }
+                        mqttPublish(mqttObject)
+                    } 
+                    else if (parsedMessage.status === 'enabled') {
+                        console.log('enabled')
+                        updateStatus("coin", parsedMessage.status);
+                    }
+                }                 
+            }
+            if (topic === 'CoinAcceptor/telemetry/cashIn') {
+                if (parsedMessage.value != '') {
+                    console.log('cashin')
+
+                    if(parsedMessage.value == 5) { 
+                        let contatore = Number(document.getElementById("coin5").innerHTML);
+                        document.getElementById("coin5").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 10) { 
+                        let contatore = Number(document.getElementById("coin10").innerHTML);
+                        document.getElementById("coin10").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 20) { 
+                        let contatore = Number(document.getElementById("coin20").innerHTML);
+                        document.getElementById("coin20").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 50) { 
+                        let contatore = Number(document.getElementById("coin50").innerHTML);
+                        document.getElementById("coin50").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 100) { 
+                        let contatore = Number(document.getElementById("coin100").innerHTML);
+                        document.getElementById("coin100").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 200) { 
+                        let contatore = Number(document.getElementById("coin200").innerHTML);
+                        document.getElementById("coin200").innerHTML = contatore + 1; 
+                    }
+                }
+            }
+
+            // ********************************
+            // BILL
+            // ********************************
+            if (topic === 'BillValidator/telemetry/status') {
+                if (parsedMessage.status != '') {
+                    if (parsedMessage.status === 'disabled') {
+                        let body = { ts: 123 }
+                        let command = {}
+                        let mqttObject = {}
+                        // abilito gettoniera
+                        command = {
+                            channelsList : [ { "enabled": true, "escrow": false },  { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false } ],
+                            ts: Number(body.ts) // int
+                        }
+                        mqttObject = {
+                            topic : 'BillValidator/command/enable', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                            message : command
+                        }
+                        mqttPublish(mqttObject)
+                    }
+                    else if (parsedMessage.status === 'enabled') {
+                        updateStatus("bill", parsedMessage.status);
+                    }
+                }                 
+            }
+            if (topic === 'BillValidator/telemetry/cashIn') {
+                if (parsedMessage.value != '') {
+                    console.log('cashin')
+
+                    if(parsedMessage.value == 500) { 
+                        let contatore = Number(document.getElementById("bill5").innerHTML);
+                        document.getElementById("bill5").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 1000) { 
+                        let contatore = Number(document.getElementById("bill10").innerHTML);
+                        document.getElementById("bill10").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 2000) { 
+                        let contatore = Number(document.getElementById("bill20").innerHTML);
+                        document.getElementById("bill20").innerHTML = contatore + 1; 
+                    }
+                    if(parsedMessage.value == 5000) { 
+                        let contatore = Number(document.getElementById("bill50").innerHTML);
+                        document.getElementById("bill50").innerHTML = contatore + 1; 
+                    }
+                }
+            }
+
+        })
+
+        // ****************************************************************
+        // COMMAND
+        // ****************************************************************
+        
+        function mqttPublish(mqttObject) {
+            client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                if (error) {
+                    console.error(error)
+                }
+            })
+        }
+        
+        window.onload = (event) => {
+            console.log("page is fully loaded");
+
+            /*
+            let body = { ts: 123 }
+            let command = {}
+            let mqttObject = {}
+            
+            // abilito gettoniera
+            command = {
+                channelsList : [ { "enabled": true },  { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true } ],
+                ts: Number(body.ts) // int
+            }
+            mqttObject = {
+                topic : 'CoinAcceptor/command/enable', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                message : command
+            }
+            mqttPublish(mqttObject)
+
+            // abilito banconote
+            command = {
+                channelsList : [ { "enabled": true, "escrow": false },  { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false }, { "enabled": true, "escrow": false } ],
+                ts: Number(body.ts) // int
+            }
+            mqttObject = {
+                topic : 'BillValidator/command/enable', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                payload : command 
+            }
+            mqttPublish(mqttObject)
+            */
+        };
+
+
+        var bulkheadcheckbox = document.querySelector("input[name=bulkheadcheckbox]");
+        bulkheadcheckbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { ts: 123 }
+                command = { ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Bulkhead/command/open',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { ts: 123 }
+                command = { ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Bulkhead/command/close',
+                    message : command 
+                }   
+            }
+            mqttPublish(mqttObject)
+        });
+
+        var sirencheckbox = document.querySelector("input[name=sirencheckbox]");
+        sirencheckbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { ts: 123 }
+                command = { ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Alarms/command/sirenOn',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { ts: 123 }
+                command = { ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Alarms/command/sirenOff',
+                    message : command 
+                }   
+            }
+            mqttPublish(mqttObject)
+        });
+
+        var ledcheckbox = document.querySelector("input[name=ledcheckbox]");
+        ledcheckbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { mode: 'on', ts: 123 }
+                command = { mode: body.mode, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'GPIO/command/mainLight',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { mode: 'off', ts: 123 }
+                command = { mode: body.mode, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'GPIO/command/mainLight',
+                    message : command 
+                }
+            }
+            mqttPublish(mqttObject)
+        });
+
+        var framefancheckbox = document.querySelector("input[name=framefancheckbox]");
+        framefancheckbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { frameFan: 100, monitorFan1: 0, monitorFan2: 0, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { frameFan: 0, monitorFan1: 0, monitorFan2: 0, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            }
+            mqttPublish(mqttObject)
+        });
+
+        var monitorfan1checkbox = document.querySelector("input[name=monitorfan1checkbox]");
+        monitorfan1checkbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { frameFan: 0, monitorFan1: 100, monitorFan2: 0, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { frameFan: 0, monitorFan1: 0, monitorFan2: 0, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            }
+            mqttPublish(mqttObject)
+        });
+
+        var monitorfan2checkbox = document.querySelector("input[name=monitorfan2checkbox]");
+        monitorfan2checkbox.addEventListener('change', function() {
+            let body = {}
+            let command = {}
+            let mqttObject = {}
+
+            if (this.checked) {
+                console.log("Checkbox is checked..");
+                body = { frameFan: 0, monitorFan1: 0, monitorFan2: 100, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            } 
+            else {
+                console.log("Checkbox is not checked..");
+                body = { frameFan: 0, monitorFan1: 0, monitorFan2: 0, ts: 123 }
+                command = { frameFan: body.frameFan, monitorFan1: body.monitorFan1, monitorFan2: body.monitorFan2, ts: Number(body.ts) }
+                mqttObject = {
+                    topic : 'Temperatures/command/fans',
+                    message : command 
+                }
+            }
+            mqttPublish(mqttObject)
+        });
+
+
+    style.
+            .title-header {
+                max-width: 700px;
+            }
+
+            input, select, .form-select-lg {
+                height: 60px;
+                font-size: 2rem !important;
+            }
+
+            .btn {
+                font-size: 2rem;
+                height: 60px;
+                line-height: 60px;
+                padding: 0 30px;
+            }
+            .stato-alarmed {
+                width:30%; border: 1px solid; background-color: red !important; color: white;
+            }
+            .stato-normal {
+                width:30%; border: 1px solid; background-color: green !important; color: white;
+            }
+            .stato-moving {
+                width:30%; border: 1px solid; background-color: yellow !important; color: #555 !important;
+            }
+            .stato-temp {
+                width:30%; border: 1px solid; background-color: blue !important; color: white;
+            }
+            .stato-waiting {
+                width:30%; border: 1px solid; background-color: rgba(255, 255, 255, 0.2) !important; color: black !important;
+            }
+        

@@ -1,0 +1,44 @@
+extends ../layout.pug
+
+block layout-content
+
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-hdd-network
+                |  Login
+
+        form#formlogin
+            //LOCAL IP
+            
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 AREA RISERVATA - SERVICE
+                        hr
+                
+                .col-12.mb-3
+                        .row.d-flex.flex-wrap.p-6
+                            h3 Utente
+                            .form-group
+                                input#formLoginUtente.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="user" value="" required)
+                        .row.d-flex.flex-wrap.p-6
+                            h3 Password
+                            .form-group
+                                input#formLoginPsw.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='password' style='height:50px' name="password" value="" required)
+                       
+                        .row.d-flex.flex-wrap.p-3(style="float: right;")
+                            a.btn.bg-primary.btn-primary(role='button' style='width:200px height:50px;'  onclick="autentica('formlogin')").align-items-center.d-flex
+                                i.bi.bi-cloud-upload
+                                    |  ENTRA
+                     
+    
+    style.
+        .btn-primary {
+            font-size: 2rem !important;
+            height: 60px !important;
+            line-height: 60px !important;
+            padding: 0 30px !important;
+            border: none !important;
+        }
+   

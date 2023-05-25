@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> mqtt/Status.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-qrcode.html">qrcode</a></li><li><a href="module-receipt.html">receipt</a></li></ul><h3>Classes</h3><ul><li><a href="AgeValidator.html">AgeValidator</a></li><li><a href="Alarms.html">Alarms</a></li><li><a href="AppSocket.html">AppSocket</a></li><li><a href="BarcodeReader.html">BarcodeReader</a></li><li><a href="BillValidator.html">BillValidator</a></li><li><a href="Boards.html">Boards</a></li><li><a href="Bulkhead.html">Bulkhead</a></li><li><a href="CoinAcceptor.html">CoinAcceptor</a></li><li><a href="Dispensers.html">Dispensers</a></li><li><a href="GPIO.html">GPIO</a></li><li><a href="MqttHandler.html">MqttHandler</a></li><li><a href="OpticalBarrier.html">OpticalBarrier</a></li><li><a href="Power.html">Power</a></li><li><a href="Printer.html">Printer</a></li><li><a href="ProductDoor.html">ProductDoor</a></li><li><a href="Status.html">Status</a></li><li><a href="Temperatures.html">Temperatures</a></li><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apiRoutes">apiRoutes</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#cancellaFile">cancellaFile</a></li><li><a href="global.html#getAlarmsStatus">getAlarmsStatus</a></li><li><a href="global.html#getBillValidatorStatus">getBillValidatorStatus</a></li><li><a href="global.html#getBulkheadStatus">getBulkheadStatus</a></li><li><a href="global.html#getCoinAcceptorStatus">getCoinAcceptorStatus</a></li><li><a href="global.html#getDispensersStatus">getDispensersStatus</a></li><li><a href="global.html#getGpioStatus">getGpioStatus</a></li><li><a href="global.html#getProductdoorStatus">getProductdoorStatus</a></li><li><a href="global.html#http">http</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#inviaTotali">inviaTotali</a></li><li><a href="global.html#loadNetwork">loadNetwork</a></li><li><a href="global.html#mqttHandler">mqttHandler</a></li><li><a href="global.html#periferiche">periferiche</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#setNetwork">setNetwork</a></li><li><a href="global.html#socketConsumer">socketConsumer</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>mqtt/Status.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// JSDoc
+
+require('dotenv').config()
+const JSONStore = require('../classes/JsonStore.class');
+const COINACCEPTOR_FILE = './public/private/periferiche/coinacceptor.json';             // ok
+const BILLVALIDATOR_FILE = './public/private/periferiche/billvalidator.json';           // ok
+const PRINTER_FILE = './public/private/periferiche/printer.json';                       // ok
+const DISPENSERS_FILE = './public/private/periferiche/dispensers.json';                 // ok
+const OPTICALBARRIER_FILE = './public/private/periferiche/opticalbarrier.json';         // ok
+const BULKHEAD_FILE = './public/private/periferiche/bulkhead.json';                     // ok
+const PRODUCTDOOR_FILE = './public/private/periferiche/productdoor.json';               // ok
+const BARCODEREADER_FILE = './public/private/periferiche/barcodereader.json';           // ok
+const AGEVALIDATOR_FILE = './public/private/periferiche/agevalidator.json';             // ok
+const FINGERPRINTREADER_FILE = './public/private/periferiche/fingerprintreader.json';   // ..
+const ALARM_FILE = './public/private/periferiche/alarms.json';                          // ok
+const TEMPERATURES_FILE = './public/private/periferiche/temperatures.json';             // ok
+const POWER_FILE = './public/private/periferiche/power.json';                           // ok
+const GPIO_FILE = './public/private/periferiche/gpio.json';                             // ok
+
+/**
+ * @class Status:
+ * 
+ * La seguente classe si occupa di leggere la telemetria degli stati delle periferiche
+ * e di salvare lo stato letto da ogni singola periferica e di salvarlo in un singolo json.
+ * 
+ * #Attenzione# La classe richiede il require di JsonStore per la lettura del file json.
+ */
+class Status {
+
+    /**
+     * Il costrutture della classe richiede i seguenti oggetti come parametri: io e mqttClient.
+     * L'oggetto "io" corrisponde alla socket server mentre "mqttClient" è il client mqtt.
+     * Ogni volta che avviene una modifica di stato su una periferica quest'ultimo viene salvato
+     * sul json relativo ed in seguito tramite l'oggetto "io" viene inviato sulla socket un emit 
+     * di tipo "status" che ha come messaggio il json in formato stringa dello stato attuale della periferica.
+     * 
+     * @constructor
+     * @param {*} io 
+     * @param {*} mqttClient 
+     */
+    constructor(io, mqttClient) {
+        this.mqttClient = mqttClient
+        this.io = io
+    }
+    
+    /**
+     * 
+     */
+    initStatus() {
+        this.mqttClient.receiveMessage('+/telemetry/status', 'status.js');
+        this.mqttClient.mqttClient.on('message', (topic, message) => {
+
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_STATUS == 1) {
+                console.log('\n[ ------------------------------------------------------ ]');
+                console.log('[ @Status.js > topic registrato da status.js:'+topic)
+                console.log('[ ------------------------------------------------------ ]\n');
+            }
+            
+            try {
+                // ricavo il nome della periferica
+                let periferica = topic.split('/')[0];
+
+                // file da leggere
+                let status_file;
+                
+                // TODO:
+                // controllare le periferiche presenti
+
+                if (topic == 'CoinAcceptor/telemetry/status') {
+                    status_file = new JSONStore(COINACCEPTOR_FILE);
+                }
+                else if (topic == 'BillValidator/telemetry/status') {
+                    status_file = new JSONStore(BILLVALIDATOR_FILE);
+                }
+                else if (topic == 'Printer/telemetry/status') {
+                    status_file = new JSONStore(PRINTER_FILE);
+                }
+                else if (topic == 'Dispensers/telemetry/status') {
+                    status_file = new JSONStore(DISPENSERS_FILE);
+                }
+                else if (topic == 'OpticalBarrier/telemetry/status') {
+                    status_file = new JSONStore(OPTICALBARRIER_FILE);
+                }
+                else if (topic == 'Bulkhead/telemetry/status') {
+                    status_file = new JSONStore(BULKHEAD_FILE);
+                }
+                else if (topic == 'ProductDoor/telemetry/status') {
+                    status_file = new JSONStore(PRODUCTDOOR_FILE);
+                }
+                else if (topic == 'BarcodeReader/telemetry/status') {
+                    status_file = new JSONStore(BARCODEREADER_FILE);
+                }
+                else if (topic == 'AgeValidator/telemetry/status') {
+                    status_file = new JSONStore(AGEVALIDATOR_FILE);
+                }
+                // else if (topic == 'FingerprintReader/telemetry/status') {
+                //     status_file = new JSONStore(FINGERPRINTREADER_FILE);
+                // }
+                else if (topic == 'Alarms/telemetry/status') {
+                    status_file = new JSONStore(ALARM_FILE);
+                }
+                else if (topic == 'Temperatures/telemetry/status') {
+                    status_file = new JSONStore(TEMPERATURES_FILE);
+                }
+                else if (topic == 'Power/telemetry/status') {
+                    status_file = new JSONStore(POWER_FILE);
+                }
+                else if (topic == 'GPIO/telemetry/status') {
+                    status_file = new JSONStore(GPIO_FILE);
+                }
+
+                /**
+                 * leggo il file e invio emit su socket
+                 */
+                if(status_file){
+                    const status = status_file.read();
+                    const parsedMessage = JSON.parse(message);
+                    status[periferica] = parsedMessage
+                    let scrittura = status_file.write(status);
+                    if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_STATUS == 1) {
+                        console.log('\n[ ------------------------------------------------------ ]');
+                        console.log('[ @Status.js > Emit da status.js:',JSON.stringify(status))
+                        console.log('[ ------------------------------------------------------ ]\n');
+                    }
+                    /**
+                     * se il file è stato scritto invio emit
+                     */
+                    if(scrittura == true){
+                        this.io.emit('status', JSON.stringify(status))
+                    }
+                }else{
+                    return
+                }
+
+            } catch (e) {
+                console.log('\n[ ------------------------------------------------------ ]');
+                console.log("[ @Status.js > errore status.js!", e)
+                console.log('[ ------------------------------------------------------ ]\n');
+            }
+        })
+    }
+}
+
+module.exports = Status
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

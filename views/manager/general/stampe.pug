@@ -1,0 +1,145 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-receipt-cutoff
+                |  Stampe
+        form#configForm
+            //TESTO SCONTRINO
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 Intestazione
+                        hr
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Esercente
+                        .form-group
+                            input#formStampe.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="esercente" value=config_stampe.esercente data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Località
+                        .form-group
+                            input#formLocalita.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="localita" value=config_stampe.localita data-config="stampe")
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Indirizzo
+                        .form-group
+                            input#formIndirizzo.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="indirizzo" value=config_stampe.indirizzo data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Telefono
+                        .form-group
+                            input#formTelefono.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="telefono" value=config_stampe.telefono data-config="stampe")
+
+            /////////////////// ----------------------------
+
+            //TESTI PER IMPORTI
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 Prezzi
+                        hr
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo per prezzo
+                        .form-group
+                            input#formPrezzo.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_prezzo" value=config_stampe.testo_prezzo data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo per resto
+                        .form-group
+                            input#formResto.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_resto" value=config_stampe.testo_resto data-config="stampe")
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo per contanti
+                        .form-group
+                            input#formContanti.form-control(type='text' style='height:50px' name="testo_contanti" value=config_stampe.testo_contanti data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo per credito rimanente
+                        .form-group
+                            input#formRimanenza.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_credito_rimanente" value=config_stampe.testo_credito_rimanente data-config="stampe")
+
+                /////////////////// ----------------------------
+                //TESTI GENERICI
+            .row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5
+                        hr
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo generico 1
+                        .form-group
+                            //label Testo generico 1
+                            input#formGenerico1.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_generico1" value=config_stampe.testo_generico1 data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo generico 2
+                        .form-group
+                            //label Testo generico 2
+                            input#formGenerico2.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_generico2" value=config_stampe.testo_generico2 data-config="stampe")
+                .col-6.mb-3
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo generico 3
+                        .form-group
+                            //label Testo generico 3
+                            input#formGenerico3.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_generico3" value=config_stampe.testo_generico3 data-config="stampe")
+                    .row.d-flex.flex-wrap.p-3
+                        h3 Testo generico 4
+                        .form-group
+                            //label Testo generico 3
+                            input#formGenerico4.form-control.js-kioskboard-input(data-kioskboard-specialcharacters="true" type='text' style='height:50px' name="testo_generico4" value=config_stampe.testo_generico4 data-config="stampe")
+
+
+
+
+
+            //Logo infofarmacia
+            //.row.p3
+                .col-12.mb-3
+                    .row.p-3
+                        h2.mt-5 Logo info farmacia
+                        hr
+
+                    .row.d-flex.flex-wrap.justify-content-end
+                        .col-4.mt-3.mb-3.text-center
+
+                            .form-group.col-md-12.mt-3.text-start
+                                .avatar-upload-wrapper
+                                    .avatar.size-xxl.avatar-upload
+                                        img(src='/img/segnaposto.jpg' alt='logo aziendale' width='300')
+                                        form.upload-avatar-container(method='post' action='' enctype='multipart/form-data')
+                                            input#upload3.upload-avatar(type='file' name='upload3')
+                                            label(for='upload3')
+                                                svg.icon.icon-sm(aria-hidden='true')
+                                                    use(href='/img/segnaposto.jpg')
+                                            input.d-none(value='Submit' type='submit')
+                                    .avatar-upload-icon
+                                        svg.icon.icon-sm(aria-hidden='true')
+                                            use(href='/img/segnaposto.jpg')
+
+
+                        .col-4.mt-3.mb-3.text-center
+                            a.w-100.btn.btn-lg.btn-success.mb-2.p-4(href='#' type='button') Carica
+                            a.w-100.btn.btn-lg.btn-danger.mb-2.p-4(href='#' type='button') Elimina
+                        .col-4.mt-3.mb-3.pt-5.text-start
+                            i.bi.bi-info-circle(data-bs-toggle='tooltip' data-bs-placement='right' title='testo homepage').px-3
+            .row
+                .col-6.mt-5.mb-3.d-flex.justify-content-start
+                    a.btn.bg-danger.btn-primary(href='#' role='button' style='width:200px; height:50px').align-items-center.d-flex
+                        i.bi.bi-x-circle
+                            |  Annulla
+                .col-6.mt-5.mb-3.d-flex.justify-content-end
+                    a.btn.bg-success.btn-primary(role='button' style='width:200px' onclick="saveConfig('configForm','config')").align-items-center.d-flex
+                        i.bi.bi-check-circle
+                            |  Salva
+
+    style.
+        .btn-primary {
+            font-size: 2rem !important;
+            height: 60px !important;
+            line-height: 60px !important;
+            padding: 0 30px !important;
+            border: none !important;
+        }
+
+

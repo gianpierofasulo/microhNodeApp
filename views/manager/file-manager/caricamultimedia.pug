@@ -1,0 +1,70 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-cloud-arrow-down
+                |  Download file da cloud
+            .row
+                .col-12.me-0.text-center
+                div#messaggio.d-none.text-danger
+                    h3 ATTENDI CARICAMENTO FILES.....            
+        main
+           form#gestionemedia  
+            .row.p-3
+                i.glyphicon(class="bi bi-info-circle",aria-hidden="true") <span style="padding:left: 5px;"> Formati supportati *.mp4 / *.jpg / *.png
+                 
+                .col-12.mt-3.me-0.text-center(style="padding-top: 20px;")
+               
+                    h3.mb-3 LISTA FILES A DISPOSIZIONE 
+                  
+                    table(style='width:100%').x-table.table.table-bordered.table-striped.log-table
+                      thead
+                        tr
+                            th(scope='col') Nome 
+                            th(scope='col') Data/ora
+                            th(scope='col').text-center Seleziona
+                        tbody#listafiles.text-left
+                            if listaFiles
+                                each val, index in listaFiles
+                                    tr
+                                    td #{val.immagine} 
+                                    td #{val.timestamp} 
+                                    td.text-center 
+                                        input#file0.form-check-input(type='radio' name='nomefile' value=val.immagine )
+                           
+                
+                .col-12.mt-3.me-0.text-center(style="padding: 20px;")
+                    h3.mb-3 FILES SU VENDING
+                    table(style='width:100%').table.x-table.table-bordered.table-striped.log-table
+                        thead
+                            tr
+                                th(scope='col') Nome file 
+                                th(scope='col') Dimensione
+                                th(scope='col').text-center  Seleziona
+                               
+                        tbody.text-left
+                            if listafileslocali
+                                each file, key in listafileslocali
+                                    tr
+                                        td #{file.name}
+                                        td #{file.size}
+                                        td.text-center 
+                                            input#fileLocal0.form-check-input(type='radio' name='nomefilelocale' value=file.name )
+                                        
+                        
+
+                .row.justify-content-center
+                    .col-3.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.btn-success(href='/file-manager/caricamediacloud', type='button')
+                            i.bi.bi-cloud-download
+                            |  Download
+                    .col-5.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.btn-info(role='button' onclick="caricamediatomachine('gestionemedia')")
+                            i.bi.bi-upload 
+                            | Carica file nella vending     
+                    .col-4.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.btn-danger(role='button' onclick="cancellafile('gestionemedia')")
+                            i.bi.bi-trash3-fill
+                            |  Cancella files

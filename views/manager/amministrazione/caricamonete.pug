@@ -1,0 +1,215 @@
+extends ../layout.pug
+
+block layout-content
+    .container-fluid.pt-5.menu-manager
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-piggy-bank
+                |  Carica monete 
+                
+        main
+            .row.p-3
+                .title-header.p-3.pb-md-5.mx-auto.text-center
+                    h1 Carica monete una alla volta facendole cadere nel canale di inserimento, come mostrato
+                .col-12.me-0.text-center
+                  img(src='/assets/img/caricamonete.jpg' alt='Carica monete' style='width:336px; height:337px;') 
+                .col-12.me-0.text-center(style="padding: 30px;")
+                    h1#messaggio_moneta Valore ultima moneta inserita: 
+                        span#moneta 0 
+                        //- span.euro &euro;
+                .col-4.offset-4.text-center(style="padding: 40px; border: 2px solid;")
+                    h1 MONETE CARICATE
+                    br
+                    h1#messaggio_importo(style='height:50px; text-align: center')
+                        span#importo 0 
+                        //- span.euro &euro;
+            .row.justify-content-center
+                .col-4.mt-5.text-center
+                    a.w-100.btn.btn-lg.btn-success.mb-1.btn-primary(href='/', type='button')
+                        i.bi.bi-arrow-left-square-fill
+                        | FINITO
+
+        script(src="https://unpkg.com/mqtt@2.12.0/dist/mqtt.min.js")
+        script.
+            
+            // ********************************
+            // MQTT > Mosquitto
+            // ********************************
+            // const host = 'test.mosquitto.org'
+            const ip = `#{ip.ip}`
+            const portWs = '8080'
+            const clientId = `microhard_${Math.random().toString(16).slice(3)}`
+            let options = {
+                clientId: clientId,
+                clean: true,
+                keepalive: 60,
+                reconnectPeriod: 1000,
+                connectTimeout: 30 * 1000
+            }
+            const connectUrlWs = `ws://${ip}:${portWs}`
+            const client = mqtt.connect(connectUrlWs, options)
+
+            // ********************************
+            // MQTT > HWBroker
+            // ********************************
+            const topicReset = 'Broadcast/command/reset'
+            // const topicReset = 'HWBroker/command/reset'
+            // let messaggio = { "ts": 123 } // funziona ma non benissimo!
+            // let messaggio = { "ts": parseInt(Date.now()/1000) } // funziona ma non benissimo!
+            let messaggio = { "ts": Date.now() } // FUNZIONA AL TOP!
+            client.publish(topicReset, JSON.stringify(messaggio), { qos: 1, retain: false }, (error) => {
+                if (error) {
+                    console.error(error)
+                }
+            })
+
+            // ********************************
+            // MQTT > subscribe
+            // ********************************
+            // - coinacceptor
+
+            let topics = [
+                'CoinAcceptor/telemetry/status',
+                'CoinAcceptor/telemetry/cashIn'
+            ]
+
+            for (let topic of topics) {
+                console.log('topic -->',topic)
+                client.subscribe([topic], () => {
+                    console.log(`Subscribed to topic: '${topic}'`)
+                })
+            }
+
+            function convertCentsToEuros(cents) {
+                var euros = cents / 100; // convert cents to euros
+                return euros;
+            }
+            
+            function convertNumberToEuros(number) {
+                return number.toLocaleString("it-IT", { style: "currency", currency: "EUR" }); // format as currency in euros
+            }
+
+            function convertItalianEuroToNumber(euroString) {
+                var euroNumber = Number(euroString.replace(/[^0-9,]+/g,"").replace(",", ".")); // remove non-numeric characters and convert to number
+                return euroNumber; // return the number value
+            }
+
+            // ********************************
+            // MQTT > on message
+            // ********************************
+            client.on('message', (topic, message) => {
+                console.log('MQTT > received message:', topic, message.toString())
+                let parsedMessage = JSON.parse(message)
+
+                // ********************************
+                // COIN
+                // ********************************
+                
+                if (topic === 'CoinAcceptor/telemetry/status') {
+                    if (parsedMessage.status != '') {
+                        if (parsedMessage.status === 'disabled') {
+                            let body = { ts: 123 }
+                            let command = {}
+                            let mqttObject = {}
+                            // abilito gettoniera
+                            command = {
+                                channelsList : [ { "enabled": true },  { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true }, { "enabled": true } ],
+                                ts: Number(body.ts) // int
+                            }
+                            mqttObject = {
+                                topic : 'CoinAcceptor/command/enable', // TODO: vedi documentazione > DDxTouch_MQTT_1.0.18.pdf
+                                message : command
+                            }
+                            mqttPublish(mqttObject)
+                        } 
+                        else if (parsedMessage.status === 'enabled') {
+                            console.log('enabled')
+                            //updateStatus("coin", parsedMessage.status);
+                        }
+                    }                 
+                }
+                if (topic === 'CoinAcceptor/telemetry/cashIn') {
+                    if (parsedMessage.value != '') {
+                        console.log('cashin')
+
+                        if(parsedMessage.value == 5) { 
+                            // - prendo importo
+                            // - converto da cent a euro
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                        if(parsedMessage.value == 10) { 
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            console.log(contatore)
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            console.log(importo)
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                        if(parsedMessage.value == 20) { 
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            console.log(contatore)
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            console.log(importo)
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                        if(parsedMessage.value == 50) { 
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            console.log(contatore)
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            console.log(importo)
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                        if(parsedMessage.value == 100) { 
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            console.log(contatore)
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            console.log(importo)
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                        if(parsedMessage.value == 200) { 
+                            let contatore = convertItalianEuroToNumber(document.getElementById("importo").innerHTML);
+                            console.log(contatore)
+                            let importo = (Number(contatore) + convertCentsToEuros(Number(parsedMessage.value)));
+                            console.log(importo)
+                            document.getElementById("importo").innerHTML = convertNumberToEuros(importo); 
+                            document.getElementById("moneta").innerHTML = convertNumberToEuros(convertCentsToEuros(Number(parsedMessage.value))); 
+                        }
+                    }
+                }
+            })
+
+            // ****************************************************************
+            // COMMAND
+            // ****************************************************************
+            
+            function mqttPublish(mqttObject) {
+                client.publish(mqttObject.topic, JSON.stringify(mqttObject.message), { qos: 1, retain: false }, (error) => {
+                    if (error) {
+                        console.error(error)
+                    }
+                })
+            }
+
+        style.
+            .title-header {
+                max-width: 700px;
+            }
+
+            input, select, .form-select-lg {
+                height: 60px;
+                font-size: 2rem !important;
+            }
+
+            .btn-primary {
+                font-size: 2rem;
+                height: 60px;
+                line-height: 60px;
+                padding: 0 30px;
+            }
+        

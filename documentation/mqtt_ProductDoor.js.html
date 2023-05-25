@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> mqtt/ProductDoor.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-qrcode.html">qrcode</a></li><li><a href="module-receipt.html">receipt</a></li></ul><h3>Classes</h3><ul><li><a href="AgeValidator.html">AgeValidator</a></li><li><a href="Alarms.html">Alarms</a></li><li><a href="AppSocket.html">AppSocket</a></li><li><a href="BarcodeReader.html">BarcodeReader</a></li><li><a href="BillValidator.html">BillValidator</a></li><li><a href="Boards.html">Boards</a></li><li><a href="Bulkhead.html">Bulkhead</a></li><li><a href="CoinAcceptor.html">CoinAcceptor</a></li><li><a href="Dispensers.html">Dispensers</a></li><li><a href="GPIO.html">GPIO</a></li><li><a href="MqttHandler.html">MqttHandler</a></li><li><a href="OpticalBarrier.html">OpticalBarrier</a></li><li><a href="Power.html">Power</a></li><li><a href="Printer.html">Printer</a></li><li><a href="ProductDoor.html">ProductDoor</a></li><li><a href="Status.html">Status</a></li><li><a href="Temperatures.html">Temperatures</a></li><li><a href="module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apiRoutes">apiRoutes</a></li><li><a href="global.html#app">app</a></li><li><a href="global.html#cancellaFile">cancellaFile</a></li><li><a href="global.html#getAlarmsStatus">getAlarmsStatus</a></li><li><a href="global.html#getBillValidatorStatus">getBillValidatorStatus</a></li><li><a href="global.html#getBulkheadStatus">getBulkheadStatus</a></li><li><a href="global.html#getCoinAcceptorStatus">getCoinAcceptorStatus</a></li><li><a href="global.html#getDispensersStatus">getDispensersStatus</a></li><li><a href="global.html#getGpioStatus">getGpioStatus</a></li><li><a href="global.html#getProductdoorStatus">getProductdoorStatus</a></li><li><a href="global.html#http">http</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#inviaTotali">inviaTotali</a></li><li><a href="global.html#loadNetwork">loadNetwork</a></li><li><a href="global.html#mqttHandler">mqttHandler</a></li><li><a href="global.html#periferiche">periferiche</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#setNetwork">setNetwork</a></li><li><a href="global.html#socketConsumer">socketConsumer</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>mqtt/ProductDoor.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// JSDoc
+
+require('dotenv').config()
+
+/**
+ * @class ProductDoor:
+ * 
+ * La seguente classe si occupa di gestire i metodi della periferica ProductDoor.
+ * I metodi implementati sono relativi agli ambiti macchina a stati, utility e mqtt.
+ * 
+ */
+class ProductDoor {
+
+    // private var
+    #subscribe
+
+    // public var
+    identita = ''
+    stato = ''
+    mqttClient
+    vm
+
+    /**
+     * Il costrutture della classe richiede i seguenti oggetti come parametri: FSM e mqttClient.
+     * L'oggetto "FSM" contiene la definizione degli stati e delle transizioni della macchina a stati.
+     * In base allo stato in cui si trova la macchina a stati la periferiche effettuerà diverse azioni.
+     * L'oggetto "mqttClient" è il client mqtt che viene utilizzato per comunicare con il modulo
+     * mqtt a basso livello tramite i metodi definiti all'interno della classe.
+     * 
+     * @constructor
+     * @param {vendingMachineFSM} vm 
+     * @param {mqttClient} mqttClient
+     */
+    constructor(mqttClient, vm=null) {
+        // this.vm = vm;
+        this.mqttClient = mqttClient
+    }
+
+    // ****************************************************************
+    // utility
+    // ****************************************************************
+
+    /**
+     * Metodo di utilità: ritorna il nome della classe
+     * @returns {string}
+     */
+    getClassName() {
+        return this.constructor.name
+    }
+    /**
+     * Metodo di utilità: mostra il nome della classe nel console.log
+     */
+    displayClass() {
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > displayClass: '+this.constructor.name)
+        }
+    }
+    /**
+     * Metodo di utilità: mostra l'identità nel console.log
+     */
+    displayIdentity() {
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > displayIdentity: '+this.identita)
+        }
+    }
+    /**
+     * Metodo di utilità: mostra lo stato nel console.log
+     */
+    displayStatus() {
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > displayStatus: '+this.stato)
+        }
+    }
+
+    // ****************************************************************
+    // init
+    // ****************************************************************
+
+    /**
+     * Logica relativa a inizializzazione della periferica
+     */
+    initPeripheral() {
+        this.getIdentity()
+        this.getStatus()
+        //FIXME:
+        //this.subscribe()
+    }
+
+    /**
+     * Logica relativa a recupero identity periferica
+     */
+    getIdentity() {
+        this.mqttClient.receiveMessage(this.identity().topic, this.getClassName())
+        this.mqttClient.mqttClient.on('message', (topic, message) => {
+            if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+                // console.log('@@@@@@ ProductDoor > initIdentity > received Message:', topic, message.toString())
+            }
+            if(topic === this.identity().topic) {
+                this.identita = message
+                this.displayIdentity()
+            }
+        })
+    }
+
+    /**
+     * Logica relativa a recupero status periferica
+     */
+    getStatus() {
+        this.mqttClient.receiveMessage(this.status().topic, this.getClassName())
+    }
+
+    // ****************************************************************
+    // BL
+    // ****************************************************************
+
+    // ...
+
+    // ****************************************************************
+    // telemetry
+    // ****************************************************************
+
+    /**
+     * Metodo MQTT: ritorna telemetry identity
+     * @returns {object} {topic: "ProductDoor/telemetry/identity"} 
+     */
+    identity() {
+        const topic = 'ProductDoor/telemetry/identity'  
+        var message = { topic : topic }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > identity > message ', message)
+        }
+        return message
+    }
+
+    /**
+     * Metodo MQTT: ritorna telemetry status
+     * @returns {object} {topic: "ProductDoor/telemetry/status"} 
+     */
+    status() {
+        const topic = 'ProductDoor/telemetry/status'  
+        var message = { topic : topic }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > status > message ', message)
+        }
+        return message
+    }
+
+    // ****************************************************************
+    // command
+    // ****************************************************************
+
+    /**
+     * Metodo MQTT: comando di apertura del portello prodotto.
+     * Accetta l'oggetto "body" come parametro.
+     * @param {object} body 
+     * @returns {object} {topic: "ProductDoor/command/open", payload: "..."} 
+     */
+    open(body) {
+        let command = {
+            ts: Number(body.ts) // int
+        }
+        var message = {
+            topic : 'ProductDoor/command/open',  
+            payload : command
+        }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > open > command ', command)
+            console.log('@@@@@@ ProductDoor > open > message ', message)
+        }
+        return message
+    }
+
+    /**
+     * Metodo MQTT: comando di chiusura del portello prodotto.
+     * Accetta l'oggetto "body" come parametro.
+     * @param {object} body 
+     * @returns {object} {topic: "ProductDoor/command/close", payload: "..."} 
+     */
+    close(body) {
+        let command = {
+            ts: Number(body.ts) // int
+        }
+        var message = {
+            topic : 'ProductDoor/command/close',  
+            payload : command
+        }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > close > command ', command)
+            console.log('@@@@@@ ProductDoor > close > message ', message)
+        }
+        return message
+    }
+
+    /**
+     * Metodo MQTT: comando di reset del portello prodotto.
+     * Accetta l'oggetto "body" come parametro.
+     * @param {object} body 
+     * @returns {object} {topic: "ProductDoor/command/reset", payload: "..."} 
+     */
+    reset(body) {
+        let command = {
+            ts: Number(body.ts) // int
+        }
+        var message = {
+            topic : 'ProductDoor/command/reset',  
+            payload : command
+        }
+        if(process.env.DEBUG == 1 &amp;&amp; process.env.DEBUG_PERIPHERALS == 1) {
+            console.log('@@@@@@ ProductDoor > reset > command ', command)
+            console.log('@@@@@@ ProductDoor > reset > message ', message)
+        }
+        return message
+    }
+
+
+}
+
+module.exports = ProductDoor
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

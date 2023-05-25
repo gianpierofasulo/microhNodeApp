@@ -1,0 +1,79 @@
+extends ../layout.pug
+
+block layout-content
+    #matricola.container-fluid.pt-5
+        .title-header.p-3.pb-md-5.mx-auto.text-center
+            h2.display-5.fw-normal.mb-0.page-title
+                i.bi.bi-magic
+                |  Comportamento
+        main
+            .row.p-3
+                .col-12.me-0
+                    form#configForm
+                        .form-group.mb-4.form-check.form-switch
+                            input#pay_before_selection.form-check-input(type='checkbox' value=behavior.pay_before_selection data-config="behavior" name="pay_before_selection" onclick="clickCheck('pay_before_selection')")
+                            label.form-check-label.ms-5(for='pay_before_selection') Abilita pagamento prima della selezione prodotto
+                        .form-group.mb-4.form-check.form-switch
+                            input#limitazioni_eta.form-check-input(type='checkbox' value=behavior.limitazioni_eta name="limitazioni_eta" data-config="behavior" onclick="clickCheck('limitazioni_eta')")
+                            label.form-check-label.ms-5(for='limitazioni_eta') Abilita pagamento se età verificata
+                        .form-group.mb-4.form-check.form-switch
+                            input#vetrina_digitale.form-check-input(type='checkbox' value=behavior.vetrina_digitale name="vetrina_digitale" data-config="behavior" onclick="clickCheck('vetrina_digitale')")
+                            label.form-check-label.ms-5(for='limitazioni_eta') Abilita vetrina prodotti digitale
+                        .form-group.mb-4.form-check.form-switch
+                            input#continua_vendita.form-check-input(type='checkbox' value=behavior.continua_vendita name="continua_vendita" data-config="behavior" onclick="clickCheck('continua_vendita')")
+                            label.form-check-label.ms-5(for='continua_vendita') Continua vendita se erogazione fallita
+                        .form-group.mb-4
+                            select#tipo-motore-tastierino(name="gruppo_tastierino" data-config="behavior")
+                                each motore in motori
+                                    option(val=motore.group selected=motore.group === behavior.gruppo_tastierino) #{motore.group}
+                            //- input#gruppo_tastierino.form-check-input(type='checkbox' value=behavior.gruppo_tastierino name="gruppo_tastierino" data-config="behavior" onclick="clickCheck('continua_vendita')")
+                            label.select-label(for='tgruppo_tastierino') Associa gruppo a tastierino numerico
+
+                .row.justify-content-center.mt-5.actions-buttons
+                    .col-4.mt-5.text-center
+                        a.w-100.btn.btn-lg.btn-success.mb-1.p-4(onclick='saveConfig("configForm","config")')
+                                i.bi.bi-check-circle.me-3
+                                span Salva
+        style.
+            .title-header {
+                max-width: 700px;
+            }
+
+            input, select, .form-select-lg {
+                height: 60px;
+                font-size: 2rem !important;
+            }
+
+            .btn-primary {
+                font-size: 2rem;
+                height: 60px;
+                line-height: 60px;
+                padding: 0 30px;
+            }
+            select{
+                width: 15%;
+                border-radius: 8px;
+                padding: 0 8px;
+                margin-right: 30px;
+                margin-top:10px;
+            }
+            .select-label{
+                font-size: 2.5rem;
+            }
+        script.
+            document.querySelectorAll('input[type=checkbox]')
+                .forEach(function (item) {
+                    if (item.value == 1) {
+                    item.checked = 1
+                    }
+                })
+
+            clickCheck = (id) => {
+                let check = document.getElementById(id);
+                //console.log(check.checked)
+                if(check.checked == 1){
+                    check.value = 1
+                }else{
+                    check.value = 0
+                }
+            }
